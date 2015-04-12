@@ -7,49 +7,63 @@ import praw
 import json
 import pprint
 from operator import itemgetter
-
+from sqlalchemy import create_engine, exists
+from sqlalchemy.orm import sessionmaker
+ 
+from sqlalchemy_declarative import Submissions, Comments, Base
 
 def getSubmissions(subreddit):
 	#todo: expand to multi subs
 	#>>> submissions = r.get_subreddit('python').get_top(limit=10)
 	sub = r.get_subreddit(subreddit)
-
-	top_comments = []
-	top_submissions = []
+	engine = create_engine('sqlite:///submissions.db')
+	Base.metadata.bind = engine
+	DBSession = sessionmaker(bind=engine)
+	session = DBSession()
 
 	#Get Top Submissions & Comments
-	for submission in sub.get_top_from_week(limit=2):
-		top_submissions.append([submission.id, submission.title, submission.score, submission.author, len(submission.comments), submission.url, submission.gilded])
-
+	for submission in sub.get_top_from_week(limit=3):
+		if session.query(exists().where(Submissions.id == submission.id)).scalar():
+			print "Submission %s already exists!" % submission.id 
+			continue
+		new_submission = Submissions(id=submission.id, title=submission.title, score=submission.score, author=str(submission.author), comments=len(submission.comments), url=submission.url, gilded=submission.gilded)
+		session.add(new_submission)
+		session.commit()
+		print "Adding Submission %s" % submission.id
+		
 		# Get Top Comments
 		##submission.replace_more_comments(limit=None, threshold =0) #http://praw.readthedocs.org/en/latest/pages/code_overview.html#praw.objects.Submission.replace_more_comments
 		
 		for comment in submission.comments:
-			if not hasattr(comment, 'body'): continue
-			top_comments.append([submission.id, comment.id, comment.body, int(comment.score), comment.author, len(comment.replies), comment.permalink, comment.gilded])
-			print comment.body, comment.gilded
-
-	return top_submissions, top_comments
+			if not isinstance(comment, praw.objects.Comment): continue
+			if session.query(exists().where(Comments.c_id == comment.id)).scalar(): 
+				print "Comment %s already exists!" % comment.id
+				continue
+			new_comment = Comments(c_sid=submission.id, c_id=comment.id, c_body=comment.body, c_score =int(comment.score), c_author=str(comment.author), c_replies=len(comment.replies), c_url =comment.permalink, c_gilded=comment.gilded)
+			session.add(new_comment)
+			session.commit()
+			print "Adding Comment %s" % comment.id
 
 
 def getGilded(subreddit):
-	sub = r.get_comments(subreddit, gilded_only = True, limit=15)
-	gilded_comments = []
-	gilded_submissions = []
+	sub = r.get_comments(subreddit, gilded_only = True, limit=3)
+	engine = create_engine('sqlite:///submissions.db')
+	Base.metadata.bind = engine
+	DBSession = sessionmaker(bind=engine)
+	session = DBSession()
 
 	for item in sub:
 		#check if gilded item is comment
 		if hasattr(item,'_submission'):
-			gilded_comments.append([item.link_id, item.id, item.body, int(item.score), item.author, len(item.replies), item.permalink, item.gilded])
+			new_gilded_comment = Comments(c_sid=item.link_id, c_id=item.id, c_body=item.body, c_score =int(item.score), c_author=str(item.author), c_replies=len(item.replies), c_url =item.permalink, c_gilded=item.gilded)
+			session.add(new_gilded_comment)
+			session.commit()
 
-		#check if gilded item is submission
 		if hasattr(item,'_comments'):
-			gilded_submissions.append([item.id, item.title, item.score, item.author, len(item.comments), item.url, item.gilded])
+			new_gilded_submissions = Submissions(id=item.id, title=item.title, score=item.score, author=str(item.author), comments=item.comments, url=item.url, gilded=item.gilded)
+			session.add(new_gilded_comment)
+			session.commit()
 
-	s_c = sorted(gilded_comments, key=itemgetter(7, 3), reverse=True)
-	pprint.pprint(s_c)
-
-	#return gilded_comments, gilded_submissions
 
 
 def sortComments(submissions, comments):
@@ -76,4 +90,4 @@ if __name__=='__main__':
 	r = praw.Reddit(user_agent=user_agent)
 	#submissions, comments = getSubmissions('fitness')
 	#sortComments(submissions, comments)
-	getGilded('fitness')
+	getSubmissions('fitness')
