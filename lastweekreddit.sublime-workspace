@@ -1,0 +1,405 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"list",
+				"list_all_scores"
+			],
+			[
+				"aver",
+				"average_score"
+			],
+			[
+				"de",
+				"declarative_base"
+			],
+			[
+				"curr",
+				"current_file"
+			],
+			[
+				"print_a",
+				"print_a_line"
+			],
+			[
+				"cu",
+				"current_file"
+			],
+			[
+				"c",
+				"current_file"
+			],
+			[
+				"amoun",
+				"amount_of_crackers"
+			],
+			[
+				"amou",
+				"amount_of_crackers"
+			],
+			[
+				"amount",
+				"amount_of_cheese"
+			],
+			[
+				"cheese",
+				"cheese_and_crackers"
+			],
+			[
+				"chee",
+				"cheese_and_crackers"
+			],
+			[
+				"boxes",
+				"boxes_of_crackers"
+			],
+			[
+				"pages",
+				"pages_to_crawl"
+			],
+			[
+				"srot",
+				"sorted_top_comments"
+			],
+			[
+				"comment",
+				"comment_analysis"
+			],
+			[
+				"post",
+				"post_list"
+			],
+			[
+				"sub",
+				"subs_posted_to"
+			],
+			[
+				"facto",
+				"factor_list"
+			],
+			[
+				"compe",
+				"competitor_combos"
+			],
+			[
+				"competitor",
+				"Competitor"
+			],
+			[
+				"vzw",
+				"vzw_false_brands"
+			],
+			[
+				"vz",
+				"vzw_false_brands"
+			],
+			[
+				"false",
+				"fasle_brands"
+			],
+			[
+				"coo",
+				"cookie_to_use"
+			],
+			[
+				"combo",
+				"combo_dict"
+			],
+			[
+				"page",
+				"pages_to_crawl"
+			],
+			[
+				"Soup",
+				"SoupStrainer"
+			],
+			[
+				"cauht",
+				"caught_content"
+			],
+			[
+				"caught",
+				"caught_content"
+			],
+			[
+				"con",
+				"content_list"
+			],
+			[
+				"spam",
+				"spam_caugh"
+			],
+			[
+				"so",
+				"sorted_extraction"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/mcurry/Dropbox (Personal)/mypython/lastweekreddit"
+	],
+	"file_history":
+	[
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/Makefile",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lastweekreddit/weekly-summary.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lastweekreddit/sqlalchemy_declarative.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/mwcurry.github.io/index.html",
+		"/Users/mcurry/Dropbox (Personal)/mypython/mwcurry.github.io/.git/COMMIT_EDITMSG",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lastweekreddit/sqlite_ex.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lpthw/reuben/ex19.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lpthw/matt/ex17.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lpthw/matt/ex16.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lpthw/matt/ex20.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/mwcurry.github.io/CNAME",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lpthw/matt/ex19.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lpthw/matt/ex18.py",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lpthw/matt/ex15.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/README.md",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/app/charts.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Tracking-Product-App/test_script/test_gcs_ga.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Tracking-Product-App/devInit/README.md",
+		"/Users/mcurry/vagrant/AIT-Brand-Tracking-Product-App/web/app.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/app/users.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/app/clients.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/app/constants.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/app/urls.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Tracking-Product-App/scrapers/brandwatch.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Tracking-Product-App/README.md",
+		"/Users/mcurry/Dropbox (Personal)/mypython/lastweekreddit/.git/COMMIT_EDITMSG",
+		"/Users/mcurry/Desktop/cache_crawler.py",
+		"/Users/mcurry/Desktop/timers.py",
+		"/Users/mcurry/Desktop/ip-cache.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/.git/MERGE_MSG",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/.git/COMMIT_EDITMSG",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/userscripts/cache_crawler.py",
+		"/Users/mcurry/Desktop/weekly-summary.py",
+		"/Users/mcurry/anaconda/lib/python2.7/site-packages/praw/decorators.py",
+		"/Users/mcurry/Desktop/user karma breakdown.py",
+		"/Users/mcurry/Desktop/bad.py",
+		"/Users/mcurry/Desktop/factors.py",
+		"/Users/mcurry/Desktop/number.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/script/cache_crawler.py",
+		"/Users/mcurry/vagrant/AIT-Brand-Health-Tracker-App/Vagrantfile",
+		"/Users/mcurry/vagrant/AIT-Brand-Tracking-Product-App/Vagrantfile",
+		"/Users/mcurry/Desktop/New Position Estimates.rtf",
+		"/Users/mcurry/Desktop/quries.rtf",
+		"/Users/mcurry/Desktop/LI.html",
+		"/Users/mcurry/Desktop/error.txt",
+		"/Users/mcurry/Desktop/slacktesting.rtf",
+		"/Users/mcurry/Desktop/cache.py",
+		"/Users/mcurry/Desktop/lib/timers.py",
+		"/Users/mcurry/Dropbox (AV&Co-AIT)/Brand Health Tracker/Business Development/Social Data/scripts/spam.py",
+		"/Users/mcurry/Desktop/spam.py"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"item",
+			"url_dict",
+			"get_pages",
+			"pages_",
+			"get_page",
+			"pages_to_crawl()",
+			"pages_to",
+			"cookie_to",
+			"_submission",
+			"cq0cu0p",
+			"gilded",
+			"cpy7tvr",
+			"cq1z7jn",
+			"ziggy",
+			"thanks",
+			"awesome",
+			"competitor_comb",
+			"competitor",
+			"beautiful",
+			"cookie",
+			"AGES",
+			"vzw_brands",
+			"all",
+			"migrate",
+			"sprint",
+			"sheet",
+			"index",
+			"lower",
+			"keywords"
+		],
+		"highlight": true,
+		"in_selection": true,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"comment",
+			"submission"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 25.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "lastweekreddit.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Desktop/cache_crawler.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

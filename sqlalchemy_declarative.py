@@ -21,20 +21,22 @@ class Submissions(Base):
 	comments = Column(Integer)
 	url = Column(String(250))
 	gilded = Column(Integer)
+	subreddit = Column(String(250))
 
 class Comments(Base):
 	__tablename__ = 'comments'
-	c_id = Column(String(250), primary_key=True)
-	c_body = Column(Text)
-	c_score = Column(Integer)
-	c_author = Column(String(250))
-	c_replies = Column(Integer)
-	c_url = Column(String(250))
-	c_gilded = Column(Integer)
+	id = Column(String(250), primary_key=True)
+	body = Column(Text)
+	score = Column(Integer)
+	author = Column(String(250))
+	replies = Column(Integer)
+	url = Column(String(250))
+	gilded = Column(Integer)
 	#submission ID of the comment
 	##Ask Abe if this should be a ForeignKey? 
-	###c_sid = Column(String(250), ForeignKey('submission.id')) 
-	c_sid = Column(String(250))
+	###sid = Column(String(250), ForeignKey('submission.id')) 
+	sid = Column(String(250))
+	subreddit = Column(String(250))
 
 
 engine = create_engine('sqlite:///submissions.db')

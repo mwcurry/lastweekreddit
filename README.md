@@ -5,7 +5,7 @@ Simple python script to display the best of Reddit for last week
 *Database*
 - Pull top posts from database in SortComments()
 
--*Operations*
+*Operations*
 - Better algorithm to determine top posts (in other words, am I missing anything good by my current method?)
 
 *Web*

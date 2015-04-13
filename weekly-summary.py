@@ -7,8 +7,9 @@ import praw
 import json
 import pprint
 from operator import itemgetter
-from sqlalchemy import create_engine, exists
+from sqlalchemy import create_engine, exists, or_, and_, func
 from sqlalchemy.orm import sessionmaker
+import numpy
  
 from sqlalchemy_declarative import Submissions, Comments, Base
 
@@ -22,11 +23,11 @@ def getSubmissions(subreddit):
 	session = DBSession()
 
 	#Get Top Submissions & Comments
-	for submission in sub.get_top_from_week(limit=3):
+	for submission in sub.get_top_from_week(limit=10):
 		if session.query(exists().where(Submissions.id == submission.id)).scalar():
 			print "Submission %s already exists!" % submission.id 
 			continue
-		new_submission = Submissions(id=submission.id, title=submission.title, score=submission.score, author=str(submission.author), comments=len(submission.comments), url=submission.url, gilded=submission.gilded)
+		new_submission = Submissions(id=submission.id, title=submission.title, score=submission.score, author=str(submission.author), comments=len(submission.comments), url=submission.url, gilded=submission.gilded, subreddit=subreddit)
 		session.add(new_submission)
 		session.commit()
 		print "Adding Submission %s" % submission.id
@@ -36,17 +37,17 @@ def getSubmissions(subreddit):
 		
 		for comment in submission.comments:
 			if not isinstance(comment, praw.objects.Comment): continue
-			if session.query(exists().where(Comments.c_id == comment.id)).scalar(): 
+			if session.query(exists().where(Comments.id == comment.id)).scalar(): 
 				print "Comment %s already exists!" % comment.id
 				continue
-			new_comment = Comments(c_sid=submission.id, c_id=comment.id, c_body=comment.body, c_score =int(comment.score), c_author=str(comment.author), c_replies=len(comment.replies), c_url =comment.permalink, c_gilded=comment.gilded)
+			new_comment = Comments(sid=submission.id, id=comment.id, body=comment.body, score =int(comment.score), author=str(comment.author), replies=len(comment.replies), url =comment.permalink, gilded=comment.gilded, subreddit=subreddit)
 			session.add(new_comment)
 			session.commit()
 			print "Adding Comment %s" % comment.id
 
 
 def getGilded(subreddit):
-	sub = r.get_comments(subreddit, gilded_only = True, limit=3)
+	sub = r.get_comments(subreddit, gilded_only = True, limit=20)
 	engine = create_engine('sqlite:///submissions.db')
 	Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
@@ -55,28 +56,61 @@ def getGilded(subreddit):
 	for item in sub:
 		#check if gilded item is comment
 		if hasattr(item,'_submission'):
-			new_gilded_comment = Comments(c_sid=item.link_id, c_id=item.id, c_body=item.body, c_score =int(item.score), c_author=str(item.author), c_replies=len(item.replies), c_url =item.permalink, c_gilded=item.gilded)
+			if session.query(exists().where(Comments.id == item.id)).scalar(): 
+				print "Comment %s already exists!" % item.id
+				continue
+			new_gilded_comment = Comments(sid=item.link_id, id=item.id, body=item.body, score =int(item.score), author=str(item.author), replies=len(item.replies), url =item.permalink, gilded=item.gilded, subreddit=subreddit)
 			session.add(new_gilded_comment)
 			session.commit()
+			print "Adding Comment %s" % comment.id
 
 		if hasattr(item,'_comments'):
-			new_gilded_submissions = Submissions(id=item.id, title=item.title, score=item.score, author=str(item.author), comments=item.comments, url=item.url, gilded=item.gilded)
-			session.add(new_gilded_comment)
+			if session.query(exists().where(Submissions.id == item.id)).scalar(): 
+				print "Submission %s already exists!" % item.id
+				continue
+			new_gilded_submission = Submissions(id=item.id, title=item.title, score=item.score, author=str(item.author), comments=len(item.comments), url=item.url, gilded=item.gilded, subreddit=subreddit)
+			session.add(new_gilded_submission)
 			session.commit()
+			print "Adding Submission %s" % submission.id
 
 
 
-def sortComments(submissions, comments):
-	sorted_top_comments = sorted(comments, key=itemgetter(3), reverse=True)
-	sorted_top_convos = sorted(comments, key=itemgetter(5), reverse=True)
-	sorted_top_submissions = sorted(submissions, key=itemgetter(2), reverse=True)
+def TopComments(subreddit, gilded="both"):
+	engine = create_engine('sqlite:///submissions.db')
+	Base.metadata.bind = engine
+	DBSession = sessionmaker(bind=engine)
+	session = DBSession()
 	
+	#Define Top Comments as those that are at least 1 standard deviation above the average gilded commentan
 
-	pprint.pprint(sorted_top_comments[0:10])
+	## Determine if we need to return all comments, gilded only, or non gilded depending on what user passes in	
+	if gilded == True:
+		filter_gilded = "Comments.gilded == 1"
+	elif gilded == False:
+		filter_gilded = "Comments.gilded == 0"
+	elif gilded == "both":
+		filter_gilded = True
+
+	## Actual score calculations
+
+	all_scores = session.query(Comments).filter(filter_gilded).with_entities(Comments.score)
+	
+	list_all_scores =  list(all_scores)
+	avg =  numpy.average(list_all_scores)
+	std = numpy.std(list_all_scores)
+	floor = round(avg + std, 0)
+
+	top = session.query(Comments).filter(and_(Comments.score > floor, filter_gilded)).all()
+	
+	print "Number of Top Comments: %i" % len(top)
+	print "Average Gilded Score %.2f" % avg
+	print "Average Gilded STD %.2f" % std
+	print "Score to break: %i \n" % floor
+
+	for comment in top:
+		print comment.author, comment.score, "\n", comment.body
+		print_break()
 	print_break()
-	for x in range(15):
-		if sorted_top_convos[x] in sorted_top_comments[0:10]: continue
-		pprint.pprint(sorted_top_convos[x])
 
 
 def print_break():
@@ -84,10 +118,9 @@ def print_break():
 		
 
 
-
 if __name__=='__main__': 
 	user_agent = "Subreddit Analyzer by /u/iwasdaydreamnation"
 	r = praw.Reddit(user_agent=user_agent)
-	#submissions, comments = getSubmissions('fitness')
-	#sortComments(submissions, comments)
-	getSubmissions('fitness')
+	TopComments('fitness', 'both')
+	#getSubmissions('fitness')
+	#getGilded('fitness')
