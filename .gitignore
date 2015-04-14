@@ -56,5 +56,6 @@ docs/_build/
 # PyBuilder
 target/
 
-#Database
+#Database & Sublime
 submissions.db
+*.sublime-project
