@@ -5,10 +5,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-	ctop, cavg, cstd, cfloor = engine.TopComments('fitness', 'both')
-	stop, savg, sstd, sfloor = engine.TopSubmissions('fitness', 'both')
-	print sorted(ctop)
-	return render_template('main.html', comments=ctop, submissions=stop)
+	subreddit = 'fitness'
+	ctop, cavg, cstd, cfloor = engine.TopComments(subreddit, 'both')
+	stop, savg, sstd, sfloor = engine.TopSubmissions(subreddit, 'both')
+	return render_template('main.html', comments=ctop, submissions=stop, subreddit = subreddit)
 
 
 if __name__ == '__main__':
