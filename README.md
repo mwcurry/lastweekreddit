@@ -9,7 +9,7 @@ Simple python script to display the best of Reddit for last week
 - Better algorithm to determine top posts (in other words, am I missing anything good by my current method?)
 
 *Web*
-- Create simple web interface to display data
+- Improve user interface. Looks like garbage now.
 
 *User*
 - Allow user to select a subreddit from predetermined
