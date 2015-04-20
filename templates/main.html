@@ -3,22 +3,21 @@
   <h1>Top Submissions</h1>
 	  {% for submission in submissions %}
 	  <h2>{{submission.title}}</h2>
-	  <h3>{{submission.score}}</h3>
-	  <h4>by {{submission.author }}</h4>
+	  <h4>{{submission.score}} by {{submission.author }}</h4>
 	  <p>
 		  Comments: {{submission.comments}}
 		  <br \>
-		  <a href="{{submission.url}}" >Read More</a>
+		  <a target="_blank" href="{{submission.url}}" >Read More</a>
 	  </p> 
   {% endfor %}
   <h1>Top Comments</h1>
   {% for comment in comments %}
 	  {# Todo: Get Submission Name from Submission ID here #}
-	  <h2>{{comment.author}} in {{comment.sid}}</h2>
-	  <h3>{{comment.score}}</h3>
+	  <h2>{{comment.author}}</h2>
+	  <h4>{{comment.score}}</h4>
 	  <p>
 		  {{comment.body}}
 		  <br \>
-		  <a href="{{comment.url}}" >Read More</a>
+		  <a target="_blank" href="{{comment.url}}" >Read More</a>
 	  </p> 
   {% endfor %}

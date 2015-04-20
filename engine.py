@@ -89,12 +89,12 @@ def TopComments(subreddit, gilded="both"):
 
 	#Check if comments exist for subreddit
 	if not session.query(exists().where(Comments.subreddit == subreddit)).scalar():
-		print "Does not exist in db"
+		print "Subreddit not exist in db"
 		getGilded(subreddit)
 
 	#Check if submissions exist for subreddit
 	if not session.query(exists().where(Submissions.subreddit == subreddit)).scalar():
-		print "Does not exist in db"
+		print "Subreddit does not exist in db"
 		getSubmissions(subreddit)
 
 	
@@ -117,7 +117,7 @@ def TopComments(subreddit, gilded="both"):
 	std = numpy.std(list_all_scores)
 	floor = round(avg + std, 0)
 
-	top = session.query(Comments).filter(and_(Comments.score > floor, filter_gilded, Comments.subreddit==subreddit)).all()
+	top = session.query(Comments).filter(and_(Comments.score > floor, filter_gilded, Comments.subreddit==subreddit)).order_by(desc(Comments.score)).all()
 
 	return top, avg, std, floor
 	session.close()

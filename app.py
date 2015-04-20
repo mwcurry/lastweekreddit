@@ -7,6 +7,7 @@ app = Flask(__name__)
 def main():
 	ctop, cavg, cstd, cfloor = engine.TopComments('fitness', 'both')
 	stop, savg, sstd, sfloor = engine.TopSubmissions('fitness', 'both')
+	print sorted(ctop)
 	return render_template('main.html', comments=ctop, submissions=stop)
 
 
