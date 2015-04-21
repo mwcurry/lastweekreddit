@@ -40,13 +40,13 @@
   <div class="container">
 	<h1>Top Submissions in r/{{subreddit}}</h1>
 		{% for group in submissions|batch(3) %}
-		<div class="row">
+		<div class="row submissions">
 			{% for submission in group %}
 				<div class="col-md-4 item {% if submission.gilded == 1 %}gold{% endif %} submission">
-					<h2>{{submission.title}}</h2>
-					<h4>{{submission.score}} by {{submission.author }}</h4>
+          <div class="top-box text-right"><a class="read-more" target="_blank" href="{{submission.url}}"></a>Submission</div>
+					<h3 class="title">{{submission.title}}</h3>
+					<h4>{{submission.score}} points <small>by {{submission.author }}</small></h4>
 					<p>Comments: {{submission.comments}}</p>
-					<a target="_blank" href="{{submission.url}}"> Read Submission</a>
 				</div>
 			{% endfor %}
 		</div>
@@ -55,15 +55,16 @@
   <div class="container">
 	<h1>Top Comments in r/{{subreddit}}</h1>
 	{% for group in comments|batch(3) %}
-	<div class="row">
+	<div class="row comments">
 		{% for comment in group %}
 			{# Todo: Get Submission Name from Submission ID here #}
 			<div class="col-md-4 item {% if comment.gilded == 1 %}gold{% endif %} comment">
-				<h2>{{comment.author}} <small>in {{comment.stitle}}</small></h2>
-				<h4>{{comment.score}}</h4>
+        <div class="top-box text-right"><a class="read-more" target="_blank" href="{{comment.url}}?context=3"></a>Comment</div>
+				<h3>{{comment.author}} <small>({{comment.score}})</small></h3>
+        <h4><small class="excerpt truncate">in {{comment.stitle}}</small></h4>
 				<p class="excerpt truncate">{{comment.body}}</p>
+        <p>Replies: {{comment.replies}}</p>
 				<a class="expand">Expand</a>
-				<a class="read-more" target="_blank" href="{{comment.url}}?context=3">Read Thread</a> 
 			</div>
 		{% endfor %}
 	</div>

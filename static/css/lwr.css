@@ -7,11 +7,11 @@
   -webkit-box-orient: vertical;
 }
 
-.item h2 {
+.item h3 {
 	display: block;
 }
 
-.gold h2:before {
+.gold h3:before {
 	display: inline-block;
 	content: "";
 	height: 20px;
@@ -23,6 +23,43 @@
 	margin-right: 5px;
 }
 
-/*.submission {
-	background-color: #E8EAF6;
-}*/
+.row {
+	display: flex;
+	margin-bottom: 1em;
+}
+
+.item {
+	flex-grow: 1;
+	min-height: 240px;
+/* 	background-color: #EEEEEE;
+	border-left: 1px #ddd solid;
+	box-sizing: border-box;
+	padding: 0px 15px;*/
+}
+
+.top-box {
+	position: relative;
+	color: white;
+	padding-right: 10px;
+}
+
+.comment .top-box {
+	background-color: #00bcd4;
+}
+
+.submission .top-box {
+	background-color: #00bcd4;
+}
+
+.top-box a {
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-decoration: none; /* No underlines on the link */
+    z-index: 10; /* Places the link above everything else in the div */
+    background-color: #FFF; /* Fix to make div clickable in IE */
+    opacity: 0; /* Fix to make div clickable in IE */
+    filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
