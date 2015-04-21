@@ -9,9 +9,6 @@ import sqlalchemy_declarative as model
 from sqlalchemy_declarative import Base
 
 
-
-
-from operator import itemgetter
 app = Flask(__name__)
 
 @app.route('/')
@@ -38,4 +35,4 @@ def main():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

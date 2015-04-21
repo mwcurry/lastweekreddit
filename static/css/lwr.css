@@ -7,11 +7,25 @@
   -webkit-box-orient: vertical;
 }
 
-.item h3 {
-	display: block;
+.title {
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
-.gold h3:before {
+/*.submissions .title {
+	background-color: #03A9F4;
+	color: #FFFFFF;
+	padding-top: 25px;
+	padding-bottom:25px;
+	text-align: center;
+	border-bottom: 1px #B6B6B6 solid;
+	margin-top: -10px;
+}*/
+
+.gold .body:before {
 	display: inline-block;
 	content: "";
 	height: 20px;
@@ -23,6 +37,7 @@
 	margin-right: 5px;
 }
 
+
 .row {
 	display: flex;
 	margin-bottom: 1em;
@@ -30,7 +45,7 @@
 
 .item {
 	flex-grow: 1;
-	min-height: 240px;
+	min-height: 200px;
 /* 	background-color: #EEEEEE;
 	border-left: 1px #ddd solid;
 	box-sizing: border-box;
@@ -44,12 +59,17 @@
 }
 
 .comment .top-box {
-	background-color: #00bcd4;
+	background-color: #0288D1;
 }
 
 .submission .top-box {
-	background-color: #00bcd4;
+	background-color: #0288D1;
 }
+
+.gold .top-b0x {
+	background-color: ##FFFDE7;
+}
+
 
 .top-box a {
 	position: absolute;
@@ -62,4 +82,8 @@
     background-color: #FFF; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
+
+.meta-info {
+	vertical-align: bottom;
 }
