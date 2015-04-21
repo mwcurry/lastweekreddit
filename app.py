@@ -1,14 +1,40 @@
 from flask import Flask, render_template
-import engine
+
+from sqlalchemy import create_engine, exists, or_, and_, func, desc
+from sqlalchemy.orm import sessionmaker
+
+import engine as APIconnect
+
+import sqlalchemy_declarative as model
+from sqlalchemy_declarative import Base
+
+
+
+
 from operator import itemgetter
 app = Flask(__name__)
 
 @app.route('/')
 def main():
+	#create sessions
+	engine = create_engine('sqlite:///submissions.db')
+	Base.metadata.bind = engine
+	DBSession = sessionmaker(bind=engine)
+	session = DBSession()
 	subreddit = 'fitness'
-	ctop, cavg, cstd, cfloor = engine.TopComments(subreddit, 'both')
-	stop, savg, sstd, sfloor = engine.TopSubmissions(subreddit, 'both')
+
+	#check if we have content for subreddit
+
+	if not model.Submissions.checkSubmissions(session, subreddit) or not model.Comments.checkComments(session, subreddit):
+		APIconnect.queryContent(session, subreddit)
+
+	#get info from model
+	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit,"both")
+	ctop, cavg, cstd, cfloor = model.Comments.getComments(session,subreddit,"both")
+	
+	#view
 	return render_template('main.html', comments=ctop, submissions=stop, subreddit = subreddit)
+	
 
 
 if __name__ == '__main__':

@@ -1,0 +1,28 @@
+
+.truncate {
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.item h2 {
+	display: block;
+}
+
+.gold h2:before {
+	display: inline-block;
+	content: "";
+	height: 20px;
+	width: 20px;
+	background: url('/static/img/star-circle.png');
+	background-size: contain;
+	background-repeat: no-repeat;	
+	margin-bottom: 1px;
+	margin-right: 5px;
+}
+
+/*.submission {
+	background-color: #E8EAF6;
+}*/
