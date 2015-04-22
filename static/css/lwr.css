@@ -40,11 +40,13 @@
 
 .row {
 	display: flex;
+	display: -webkit-flex;
 	margin-bottom: 1em;
 }
 
 .item {
-	flex-grow: 1;
+	flex-grow: 0;
+	-webkit-flex-grow: 0;
 	min-height: 200px;
 /* 	background-color: #EEEEEE;
 	border-left: 1px #ddd solid;
@@ -66,7 +68,7 @@
 	background-color: #0288D1;
 }
 
-.gold .top-b0x {
+.gold .top-box {
 	background-color: ##FFFDE7;
 }
 
@@ -85,5 +87,8 @@
 }
 
 .meta-info {
-	vertical-align: bottom;
+  vertical-align: bottom;
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
 }
