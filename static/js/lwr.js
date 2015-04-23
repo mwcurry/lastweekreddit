@@ -1,16 +1,19 @@
 //Add show/hide custom event triggers
 $(document).ready(function() {
-	$(".hideGold").click(function() {
-		$(".gold").slideToggle();
-		$(this).toggleClass("glyphicon glyphicon-ok");
+	$("[name='toggleGold']").bootstrapSwitch({
+		onText: "Show Gold",
+		offText: "Hide Gold",
+		onSwitchChange:function(){
+			$(".gold").slideToggle();
+		}
 	});
-});
-
-$(document).ready(function() {
-	$(".onlyGold").click(function() {
+	$("[name='toggleGoldOnly']").bootstrapSwitch({
+	onText: "Show Only Gold",
+	offText: "Hide Only Gold",
+	onSwitchChange:function(){
 		$(".regular").slideToggle();
-		$(this).toggleClass("glyphicon glyphicon-ok");
-	});
+	}
+});
 });
 
 //Javascript to expand thanks to Diego F.
@@ -28,3 +31,18 @@ $(document).ready(function(e) {
 	  	}
 	  });
 });
+
+//Update menu to be active when on part of salient page
+$(window).on('scroll', function() {
+    $('.anchor').each(function() {
+        if($(window).scrollTop() >= $(this).position().top) {
+            var name = $(this).attr('name');
+            $('.navbar li').removeClass('active');
+            $('.navbar a[href=#'+ name +']').parent().addClass('active');
+        }
+    });
+});
+
+//bootstrap switch
+
+;
