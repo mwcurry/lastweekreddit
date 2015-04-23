@@ -30,9 +30,9 @@ def main():
 	ctop, cavg, cstd, cfloor = model.Comments.getComments(session,subreddit,"both")
 	
 	#view
-	return render_template('main.html', comments=ctop, submissions=stop, subreddit = subreddit)
+	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit)
 	
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

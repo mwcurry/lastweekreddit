@@ -1,4 +1,15 @@
 
+body > .container {
+	padding-top: 60px;
+}
+
+a.anchor{
+	display: block;
+	position: relative;
+	top: -60px;
+	visibility: hidden;
+}
+
 .truncate {
   overflow : hidden;
   text-overflow: ellipsis;
@@ -25,7 +36,7 @@
 	margin-top: -10px;
 }*/
 
-.gold .body:before {
+.gold .body:before, .gold .title.lead:before {
 	display: inline-block;
 	content: "";
 	height: 20px;
@@ -39,14 +50,10 @@
 
 
 .row {
-	display: flex;
-	display: -webkit-flex;
 	margin-bottom: 1em;
 }
 
 .item {
-	flex-grow: 0;
-	-webkit-flex-grow: 0;
 	min-height: 200px;
 /* 	background-color: #EEEEEE;
 	border-left: 1px #ddd solid;
@@ -60,6 +67,7 @@
 	padding-right: 10px;
 }
 
+
 .comment .top-box {
 	background-color: #0288D1;
 }
@@ -69,9 +77,9 @@
 }
 
 .gold .top-box {
-	background-color: ##FFFDE7;
+	background-color: #FFEB3B;
+	color: #727272;
 }
-
 
 .top-box a {
 	position: absolute;
