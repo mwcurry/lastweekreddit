@@ -45,7 +45,7 @@ class Submissions(Base):
 		
 			#convert created_UTC to Day of week
 			day_posted = datetime.fromtimestamp(submission.created_utc).strftime("%A")
-			date_posted = datetime.fromtimestamp(submission.created_utc).strftime('%m/%d')
+			date_posted = datetime.fromtimestamp(submission.created_utc).strftime('%m/%d/%y')
 
 			new_submission = Submissions(id=submission.id,
 										title=submission.title,
@@ -83,6 +83,16 @@ class Submissions(Base):
 
 		return top, avg, std, floor
 
+	@classmethod
+	def removeSubmissions(class_, subreddit):
+		engine = create_engine('sqlite:///submissions.db')
+		Base.metadata.bind = engine
+		DBSession = sessionmaker(bind=engine)
+		session = DBSession()
+
+		session.query(Submissions).filter(Submissions.subreddit==subreddit).delete()
+		session.commit()
+
 
 
 class Comments(Base):
@@ -119,7 +129,7 @@ class Comments(Base):
 
 			#convert created_UTC to Day of week
 			day_posted = datetime.fromtimestamp(comment.created_utc).strftime("%A")
-			date_posted = datetime.fromtimestamp(comment.created_utc).strftime('%m/%d')
+			date_posted = datetime.fromtimestamp(comment.created_utc).strftime('%m/%d/%y')
 
 			new_comment = Comments(	sid=comment.submission.id, 
 									stitle=comment.submission.title,
@@ -156,8 +166,24 @@ class Comments(Base):
 
 		top = session.query(Comments).filter(and_(Comments.score > floor, Comments.subreddit==subreddit)).order_by(desc(Comments.score)).all()
 
-		return top, avg, std, floor	
+		query = session.query(Comments.stitle.distinct().label("submission_title")).filter(Comments.score > floor)
+		titles = [row.submission_title for row in query.all()]
+
+		return top, avg, std, floor, titles
+	
+	@classmethod
+	def removeComments(class_, subreddit):
+		engine = create_engine('sqlite:///submissions.db')
+		Base.metadata.bind = engine
+		DBSession = sessionmaker(bind=engine)
+		session = DBSession()
+
+		session.query(Comments).filter(Comments.subreddit==subreddit).delete()
+		session.commit()
 
 if __name__ == '__main__':
 	engine = create_engine('sqlite:///submissions.db')
 	Base.metadata.create_all(engine)
+
+
+
