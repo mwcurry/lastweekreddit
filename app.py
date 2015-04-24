@@ -26,8 +26,8 @@ def main():
 		APIconnect.queryContent(session, subreddit)
 
 	#get info from model
-	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit,"both")
-	ctop, cavg, cstd, cfloor = model.Comments.getComments(session,subreddit,"both")
+	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
+	ctop, cavg, cstd, cfloor = model.Comments.getComments(session,subreddit)
 	
 	#view
 	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit)

@@ -5,13 +5,12 @@ SQL Alchemy database clases
 import os
 import sys
 import praw
-import json
-import pprint
 from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy import create_engine, exists, or_, and_, func, desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
+from datetime import datetime
 import numpy
 
 
@@ -28,6 +27,8 @@ class Submissions(Base):
 	url = Column(Text)
 	gilded = Column(Integer)
 	subreddit = Column(Text)
+	day = Column(Text)
+	date = Column(Text)
 
 	@classmethod
 	def addSubmissions(class_, subreddit, submissions):
@@ -41,7 +42,21 @@ class Submissions(Base):
 			if session.query(exists().where(Submissions.id == submission.id)).scalar():
 				print "Submission %s already exists!" % submission.id 
 				continue
-			new_submission = Submissions(id=submission.id, title=submission.title, score=submission.score, author=str(submission.author), comments=len(submission.comments), url=submission.url, gilded=submission.gilded, subreddit=subreddit)
+		
+			#convert created_UTC to Day of week
+			day_posted = datetime.fromtimestamp(submission.created_utc).strftime("%A")
+			date_posted = datetime.fromtimestamp(submission.created_utc).strftime('%m/%d')
+
+			new_submission = Submissions(id=submission.id,
+										title=submission.title,
+										score=submission.score,
+										author=str(submission.author),
+										comments=len(submission.comments),
+										url=submission.url,
+										gilded=submission.gilded,
+										subreddit=subreddit,
+										day=day_posted,
+										date=date_posted)
 			session.add(new_submission)
 			print "Storing Submission %s" % submission.id
 
@@ -53,19 +68,11 @@ class Submissions(Base):
 		else: return False
 	
 	@classmethod
-	def getSubmissions(class_, session, subreddit, gilded="both"):
+	def getSubmissions(class_, session, subreddit):
 		#todo: expand to multi subs
 
-		## Determine if we need to return all comments, gilded only, or non gilded depending on what user passes in	
-		if gilded == True:
-			filter_gilded = "Submissions.gilded == 1"
-		elif gilded == False:
-			filter_gilded = "Submissions.gilded == 0"
-		elif gilded == "both":
-			filter_gilded = True
-
 		## Actual score calculations
-		all_scores = session.query(Submissions).filter(filter_gilded).with_entities(Submissions.score)
+		all_scores = session.query(Submissions).with_entities(Submissions.score)
 		
 		list_all_scores =  list(all_scores)
 		avg =  numpy.average(list_all_scores)
@@ -93,6 +100,8 @@ class Comments(Base):
 	sid = Column(Text)
 	stitle = Column(Text)
 	subreddit = Column(Text)
+	day = Column(Text)
+	date = Column(Text)
 
 	
 	@classmethod
@@ -107,7 +116,23 @@ class Comments(Base):
 			if session.query(exists().where(Comments.id == comment.id)).scalar():
 				print "Comment %s already exists!" % comment.id 
 				continue
-			new_comment = Comments(sid=comment.submission.id, stitle=comment.submission.title, id=comment.id, body=comment.body, score =int(comment.score), author=str(comment.author), replies=len(comment.replies), url =comment.permalink, gilded=comment.gilded, subreddit=subreddit)
+
+			#convert created_UTC to Day of week
+			day_posted = datetime.fromtimestamp(comment.created_utc).strftime("%A")
+			date_posted = datetime.fromtimestamp(comment.created_utc).strftime('%m/%d')
+
+			new_comment = Comments(	sid=comment.submission.id, 
+									stitle=comment.submission.title,
+									id=comment.id,
+									body=comment.body,
+									score =int(comment.score),
+									author=str(comment.author),
+									replies=len(comment.replies),
+									url =comment.permalink,
+									gilded=comment.gilded,
+									subreddit=subreddit,
+									day=day_posted,
+									date=date_posted)
 			session.add(new_comment)
 			print "Storing Comment %s" % comment.id
 
@@ -119,24 +144,17 @@ class Comments(Base):
 		else: return False
 
 	@classmethod
-	def getComments(class_, session, subreddit, gilded="both"):
-		## Determine if we need to return all comments, gilded only, or non gilded depending on what user passes in	
-		if gilded == True:
-			filter_gilded = "Comments.gilded == 1"
-		elif gilded == False:
-			filter_gilded = "Comments.gilded == 0"
-		elif gilded == "both":
-			filter_gilded = True
+	def getComments(class_, session, subreddit):
 
 		## Actual score calculations
-		all_scores = session.query(Comments).filter(filter_gilded).with_entities(Comments.score)
+		all_scores = session.query(Comments).with_entities(Comments.score)
 		
 		list_all_scores =  list(all_scores)
 		avg =  numpy.average(list_all_scores)
 		std = numpy.std(list_all_scores)
 		floor = round(avg + std, 0)
 
-		top = session.query(Comments).filter(and_(Comments.score > floor, filter_gilded, Comments.subreddit==subreddit)).order_by(desc(Comments.score)).all()
+		top = session.query(Comments).filter(and_(Comments.score > floor, Comments.subreddit==subreddit)).order_by(desc(Comments.score)).all()
 
 		return top, avg, std, floor	
 

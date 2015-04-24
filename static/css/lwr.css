@@ -3,6 +3,10 @@ body > .container {
 	padding-top: 60px;
 }
 
+.navbar-right {
+	padding-top: 10px;
+}
+
 a.anchor{
 	display: block;
 	position: relative;
@@ -77,8 +81,7 @@ a.anchor{
 }
 
 .gold .top-box {
-	background-color: #FFEB3B;
-	color: #727272;
+	background-color: #f0ad4e;
 }
 
 .top-box a {

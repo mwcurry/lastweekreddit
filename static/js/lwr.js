@@ -1,19 +1,34 @@
 //Add show/hide custom event triggers
 $(document).ready(function() {
 	$("[name='toggleGold']").bootstrapSwitch({
-		onText: "Show Gold",
-		offText: "Hide Gold",
+		state: "false",
+		size: "small",	
+		inverse: "true",
+		onColor: "warning",
+		onText: "On",
+		offText: "Off",
+		labelText: "Gold",
+		handleWidth: "60",
 		onSwitchChange:function(){
 			$(".gold").slideToggle();
+			$("[name='toggleGoldOnly']").bootstrapSwitch('toggleReadonly');
 		}
 	});
 	$("[name='toggleGoldOnly']").bootstrapSwitch({
-	onText: "Show Only Gold",
-	offText: "Hide Only Gold",
-	onSwitchChange:function(){
-		$(".regular").slideToggle();
-	}
-});
+		state: "true",
+		size: "small",
+		inverse: "true",
+		onColor: "default",
+		offColor: "warning",
+		onText: "Off",
+		offText: "On",
+		labelText: "Gold Only",
+		handleWidth: "60",
+		onSwitchChange:function(){
+			$(".regular").slideToggle();
+			$("[name='toggleGold']").bootstrapSwitch('toggleReadonly');
+		}
+	});
 });
 
 //Javascript to expand thanks to Diego F.
