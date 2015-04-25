@@ -53,12 +53,11 @@ a.anchor{
 }
 
 
-.row {
-	margin-bottom: 1em;
-}
-
 .item {
 	min-height: 200px;
+	margin-bottom: 1em;
+	position: relative;
+
 /* 	background-color: #EEEEEE;
 	border-left: 1px #ddd solid;
 	box-sizing: border-box;
@@ -102,4 +101,5 @@ a.anchor{
   position: absolute;
   width: 100%;
   bottom: 0px;
+  /*min-width: 350px;*/
 }

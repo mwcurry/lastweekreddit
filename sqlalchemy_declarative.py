@@ -5,7 +5,7 @@ SQL Alchemy database clases
 import os
 import sys
 import praw
-from sqlalchemy import Column, ForeignKey, Integer, Text
+from sqlalchemy import Column, ForeignKey, Integer, Text, DateTime
 from sqlalchemy import create_engine, exists, or_, and_, func, desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
@@ -27,8 +27,7 @@ class Submissions(Base):
 	url = Column(Text)
 	gilded = Column(Integer)
 	subreddit = Column(Text)
-	day = Column(Text)
-	date = Column(Text)
+	created_utc = Column(Integer)
 
 	@classmethod
 	def addSubmissions(class_, subreddit, submissions):
@@ -55,8 +54,7 @@ class Submissions(Base):
 										url=submission.url,
 										gilded=submission.gilded,
 										subreddit=subreddit,
-										day=day_posted,
-										date=date_posted)
+										created_utc=submission.created_utc)
 			session.add(new_submission)
 			print "Storing Submission %s" % submission.id
 
@@ -64,6 +62,11 @@ class Submissions(Base):
 
 	@classmethod
 	def checkSubmissions(class_, session, subreddit):
+		if session.query(exists().where(Submissions.subreddit == subreddit)).scalar(): return True
+		else: return False
+
+	@classmethod
+	def checkSubreddit(class_, session, subreddit):
 		if session.query(exists().where(Submissions.subreddit == subreddit)).scalar(): return True
 		else: return False
 	
@@ -110,8 +113,7 @@ class Comments(Base):
 	sid = Column(Text)
 	stitle = Column(Text)
 	subreddit = Column(Text)
-	day = Column(Text)
-	date = Column(Text)
+	created_utc = Column(Integer)
 
 	
 	@classmethod
@@ -141,8 +143,7 @@ class Comments(Base):
 									url =comment.permalink,
 									gilded=comment.gilded,
 									subreddit=subreddit,
-									day=day_posted,
-									date=date_posted)
+									created_utc=comment.created_utc)
 			session.add(new_comment)
 			print "Storing Comment %s" % comment.id
 
@@ -150,6 +151,11 @@ class Comments(Base):
 
 	@classmethod
 	def checkComments(class_, session, subreddit):
+		if session.query(exists().where(Comments.subreddit == subreddit)).scalar(): return True
+		else: return False
+
+	@classmethod
+	def checkSubreddit(class_, session, subreddit):
 		if session.query(exists().where(Comments.subreddit == subreddit)).scalar(): return True
 		else: return False
 

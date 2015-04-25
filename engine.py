@@ -52,6 +52,15 @@ def queryContent(session, subreddit):
 	model.Comments.addComments(subreddit, comments)
 
 
+#Jinja filters
+def format_datetime(value):
+    date = time.strftime('%m-%d-%Y', time.gmtime(value))
+    return date
+def format_day(value):
+    day = time.strftime("%A", time.gmtime(value/1000))
+    return day
+
+
 if __name__=='__main__': 
 	engine = create_engine('sqlite:///submissions.db')
 	model.Base.metadata.bind = engine

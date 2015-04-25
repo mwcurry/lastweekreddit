@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+  {% block content %}
+  <div class="container">
+  <a class="anchor" name="submissions"></a>
+  <div class="jumbotron">
+    <h1>{% if subreddit %}r/{{subreddit}}{% else %}That subreddit{% endif %} doesn't exist.</h1>
+    <p>Add it to be tracked:</p>
+    <div class="row">
+    <div class="col-lg-6">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="{% if subreddit %}Add r/{{subreddit}}{% else %}Enter Subreddit{% endif %}" method="POST">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="button">Add it</button>
+        </span>
+      </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+  </div>
+  </div>
+{% endblock %}
