@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request, flash, get_flashed_messages
 
 from sqlalchemy import create_engine, exists, or_, and_, func, desc
 from sqlalchemy.orm import sessionmaker
@@ -12,6 +12,7 @@ from sqlalchemy_declarative import Base
 app = Flask(__name__)
 app.jinja_env.filters['date'] = APIconnect.format_datetime
 app.jinja_env.filters['day'] = APIconnect.format_day
+app.secret_key = 'some_secret'
 
 
 @app.route('/')
@@ -69,25 +70,20 @@ def sub(subreddit):
 	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit, titles = titles)
 
 @app.route('/<subreddit>/add')
-def add_sub_from_url(subreddit):
-	#create sessions
+@app.route('/add', methods=['GET', 'POST'])
+def add_sub(subreddit=None):
 	engine = create_engine('sqlite:///submissions.db')
 	Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	
+	if request.method == 'POST':
+		subreddit = str(request.form['to_add'])
+		if (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
+			flash('Subreddit already tracked.', 'alert-warning')
+			return redirect(subreddit)
+
+	#feedback = get_flashed_messages(with_categories=True)
 	return render_template('error.html', subreddit=subreddit)
-
-@app.route('/add')
-def add_sub():
-	#create sessions
-	engine = create_engine('sqlite:///submissions.db')
-	Base.metadata.bind = engine
-	DBSession = sessionmaker(bind=engine)
-	session = DBSession()
-	
-	return render_template('error.html')
-
 
 
 if __name__ == '__main__':

@@ -3,8 +3,6 @@ Script to summarize the top submissions & comments for a subreddit in the past w
 
 '''
 
-## Add session.commit() to end of for loop in getSubmission
-
 import praw
 import json
 import pprint

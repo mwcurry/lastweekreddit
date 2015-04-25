@@ -1,19 +1,31 @@
 {% extends "base.html" %}
   {% block content %}
   <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert {{category}} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <a href="#" class="alert-link">{{ message }}</a>
+        </div>
+      {% endfor %}
+    {% endif %}
   <a class="anchor" name="submissions"></a>
   <div class="jumbotron">
-    <h1>{% if subreddit %}r/{{subreddit}}{% else %}That subreddit{% endif %} doesn't exist.</h1>
+    <h1>Not tracking {% if subreddit %}r/{{subreddit}}{% else %}that subreddit{% endif %}.</h1>
     <p>Add it to be tracked:</p>
     <div class="row">
     <div class="col-lg-6">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="{% if subreddit %}Add r/{{subreddit}}{% else %}Enter Subreddit{% endif %}" method="POST">
-        <span class="input-group-btn">
-          <button class="btn btn-primary" type="button">Add it</button>
-        </span>
-      </div><!-- /input-group -->
+      <form method='POST'>
+        <div class="input-group">
+          <input name="to_add" type="text" class="form-control" placeholder="{% if subreddit %}{{subreddit}}{% else %}Enter subreddit name (e.g. 'funny')…{% endif %}">
+          <span class="input-group-btn" method="POST">
+            <button class="btn btn-primary" type="submit">Add it</button>
+          </span>
+        </div><!-- /input-group -->
+      </form>
     </div><!-- /.col-lg-6 -->
   </div>
   </div>
+{% endwith %}
 {% endblock %}
