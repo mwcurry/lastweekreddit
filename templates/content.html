@@ -28,11 +28,13 @@
   <div class="container">
   <a class="anchor" name="comments"></a>
 	<h1>Top Comments in r/{{subreddit}}</h1>
+<!-- remove subreddit listing for now  
   <ul>
     {% for title in titles %}
     <li>{{title}}</li>
     {% endfor %}
   </ul>
+--> 
 	{% for group in comments|batch(3) %}
 <!--	<div class="row comments"> -->
 		{% for comment in group %}

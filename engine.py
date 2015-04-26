@@ -46,8 +46,8 @@ def queryContent(session, subreddit):
 			comments.append(comment)
 
 	# Store comments & submissions lists in database comments
-	model.Submissions.addSubmissions(subreddit, submissions)
-	model.Comments.addComments(subreddit, comments)
+	model.Submissions.addSubmissions(session, subreddit, submissions)
+	model.Comments.addComments(session, subreddit, comments)
 
 
 #Jinja filters

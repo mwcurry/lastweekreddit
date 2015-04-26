@@ -35,14 +35,14 @@ def main():
 		APIconnect.queryContent(session, subreddit)
 
 	#get info from model
-	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
+	stop, savg, sstd, sfloor, subreddits = model.Submissions.getSubmissions(session,subreddit)
 	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
 	
 	#view
-	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit, titles = titles)
+	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit, titles = titles, menuitems = subreddits)
 
 
-@app.route('/<subreddit>')
+@app.route('/<subreddit>/')
 def sub(subreddit):
 	#create sessions
 	engine = create_engine('sqlite:///submissions.db')
@@ -57,19 +57,14 @@ def sub(subreddit):
 		#return render_template('error.html', subreddit=subreddit)
 		return redirect(subreddit + "/add", code=302)
 
-
-	#check if we have content for subreddit
-	if not model.Submissions.checkSubmissions(session, subreddit) or not model.Comments.checkComments(session, subreddit):
-		APIconnect.queryContent(session, subreddit)
-
 	#get info from model
-	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
+	stop, savg, sstd, sfloor, subreddits = model.Submissions.getSubmissions(session,subreddit)
 	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
 	
 	#view
-	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit, titles = titles)
+	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit, titles = titles, menuitems = subreddits)
 
-@app.route('/<subreddit>/add')
+@app.route('/<subreddit>/add', methods=['GET', 'POST'])
 @app.route('/add', methods=['GET', 'POST'])
 def add_sub(subreddit=None):
 	engine = create_engine('sqlite:///submissions.db')
@@ -81,9 +76,11 @@ def add_sub(subreddit=None):
 		if (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
 			flash('Subreddit already tracked.', 'alert-warning')
 			return redirect(subreddit)
-
-	#feedback = get_flashed_messages(with_categories=True)
-	return render_template('error.html', subreddit=subreddit)
+		else:
+			#APIconnect.queryContent(session, subreddit)
+			return render_template('error.html', subreddit=subreddit, modal=True)
+	else:
+		return render_template('error.html', subreddit=subreddit)
 
 
 if __name__ == '__main__':

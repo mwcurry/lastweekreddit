@@ -31,6 +31,11 @@ $(document).ready(function() {
 	});
 });
 
+$(document).ready(function(){
+    $('#modal').modal("show");
+    
+});
+
 //Javascript to expand thanks to Diego F.
 $(document).ready(function(e) {
 	$("a.expand").click(function(e){
@@ -48,6 +53,7 @@ $(document).ready(function(e) {
 });
 
 //Update menu to be active when on part of salient page
+//Todo, repalce with bootstrap spy
 $(window).on('scroll', function() {
     $('.anchor').each(function() {
         if($(window).scrollTop() >= $(this).position().top) {
@@ -57,7 +63,3 @@ $(window).on('scroll', function() {
         }
     });
 });
-
-//bootstrap switch
-
-;

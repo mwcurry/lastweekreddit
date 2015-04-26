@@ -30,12 +30,7 @@ class Submissions(Base):
 	created_utc = Column(Integer)
 
 	@classmethod
-	def addSubmissions(class_, subreddit, submissions):
-		engine = create_engine('sqlite:///submissions.db')
-		Base.metadata.bind = engine
-		DBSession = sessionmaker(bind=engine)
-		session = DBSession()
-
+	def addSubmissions(class_, session, subreddit, submissions):
 		#Store Submissions
 		for submission in submissions:
 			if session.query(exists().where(Submissions.id == submission.id)).scalar():
@@ -84,7 +79,12 @@ class Submissions(Base):
 
 		top = session.query(Submissions).filter(Submissions.subreddit==subreddit).order_by(desc(Submissions.score)).all()
 
-		return top, avg, std, floor
+
+		#Get subreddits that we have submissions for
+		query = session.query(Submissions.subreddit.distinct().label("subreddit"))
+		subs = [row.subreddit for row in query.all()]
+		
+		return top, avg, std, floor, subs
 
 	@classmethod
 	def removeSubmissions(class_, subreddit):
@@ -117,11 +117,7 @@ class Comments(Base):
 
 	
 	@classmethod
-	def addComments(class_, subreddit, comments):
-		engine = create_engine('sqlite:///submissions.db')
-		Base.metadata.bind = engine
-		DBSession = sessionmaker(bind=engine)
-		session = DBSession()
+	def addComments(class_, session, subreddit, comments):
 
 		#Store Submissions
 		for comment in comments:
