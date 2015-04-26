@@ -10,7 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import time
  
-import sqlalchemy_declarative as model
+import model
 
 def queryContent(session, subreddit):
 	user_agent = "Weekly Subreddit Summary by /u/iwasdaydreamnation"
@@ -20,7 +20,6 @@ def queryContent(session, subreddit):
 
 	comments = []
 	submissions = []
-
 
 	#Get Gold Comments & Submissions
 	for item in gilded:

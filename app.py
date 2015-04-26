@@ -5,8 +5,8 @@ from sqlalchemy.orm import sessionmaker
 
 import engine as APIconnect
 
-import sqlalchemy_declarative as model
-from sqlalchemy_declarative import Base
+import model
+from model import Base
 
 
 app = Flask(__name__)
