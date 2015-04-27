@@ -13,6 +13,8 @@ from sqlalchemy import create_engine
 from datetime import datetime
 import numpy
 
+import time
+
 
 Base = declarative_base()
 
@@ -27,16 +29,19 @@ class Subreddits(Base):
 
 	@classmethod
 	def addSubreddit(class_, session, subreddit):
-		new_subreddit = Subreddits(
-							id=subreddit.id,
-							title=subreddit.display_name.lower(),
-							url=subreddit._url,
-							description=subreddit.description,
-							added=datetime.utcnow(),
-							updated=datetime.utcnow())
-		session.add(new_subreddit)
-		session.commit()
-		print "Storing Subreddit %s" % subreddit.display_name
+		if session.query(exists().where(Subreddits.title == subreddit.display_name.lower())).scalar():
+			print "Subreddit %s already exists!" % Subreddits.title 
+		else:
+			new_subreddit = Subreddits(
+								id=subreddit.id,
+								title=subreddit.display_name.lower(),
+								url=subreddit._url,
+								description=subreddit.description,
+								added=datetime.utcnow(),
+								updated=datetime.utcnow())
+			session.add(new_subreddit)
+			session.commit()
+			print "Storing Subreddit %s" % subreddit.display_name
 
 	@classmethod
 	def checkSubreddit(class_, session, subreddit):
@@ -82,7 +87,7 @@ class Submissions(Base):
 										subreddit=subreddit,
 										created_utc=submission.created_utc)
 			session.add(new_submission)
-			print "Storing Submission %s" % submission.id
+			print "Storing Submission %s" % (submission.id)
 
 		session.commit() 
 
@@ -144,7 +149,6 @@ class Comments(Base):
 	
 	@classmethod
 	def addComments(class_, session, subreddit, comments):
-
 		#Store Submissions
 		for comment in comments:
 			if session.query(exists().where(Comments.id == comment.id)).scalar():
@@ -163,7 +167,7 @@ class Comments(Base):
 									subreddit=subreddit,
 									created_utc=comment.created_utc)
 			session.add(new_comment)
-			print "Storing Comment %s" % comment.id
+			print "Storing Comment %s" % (comment.id)
 
 		session.commit()
 

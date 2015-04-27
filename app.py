@@ -54,7 +54,7 @@ def sub(subreddit):
 		return redirect(subreddit + "/add", code=302)
 	
 	#check if subreddit has content, if not let user know there is no content
-	if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
+	if not (model.Submissions.checkSubreddit(session, subreddit) and model.Comments.checkSubreddit(session, subreddit)):
 		flash('Retrieving content from Reddit', 'alert-warning')
 		return render_template('content.html', subreddit=subreddit, menuitems = subreddits)
 
@@ -73,16 +73,20 @@ def add_sub(subreddit=None):
 	Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
+
+	#menu items
+	subreddits = model.Subreddits.getSubredditsUnique(session)
+
 	if request.method == 'POST':
 		subreddit = str(request.form['to_add'])
 		if (model.Subreddits.checkSubreddit(session, subreddit)):
 			flash('Subreddit already tracked.', 'alert-warning')
 			return redirect(subreddit)
 		else:
-			#APIconnect.queryContent(session, subreddit)
-			return render_template('error.html', subreddit=subreddit, modal=True)
+			APIconnect.queryContent(session, subreddit)
+			return redirect(subreddit)
 	else:
-		return render_template('error.html', subreddit=subreddit)
+		return render_template('error.html', subreddit=subreddit, menuitems = subreddits)
 
 
 if __name__ == '__main__':

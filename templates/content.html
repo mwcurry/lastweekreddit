@@ -41,7 +41,7 @@
 			{# Todo: Get Submission Name from Submission ID here #}
 			<div class="col-md-6 item {% if comment.gilded == 1 %}gold{% else %}regular{% endif %} comment">
         <div class="top-box {% if comment.gilded == 1 %}gold{% endif %} text-right"><a class="read-more" target="_blank" href="{{comment.url}}?context=3"></a>{{ comment.created_utc|date}}</div>
-        <p class="body excerpt truncate">{{comment.body}}</p>
+        <p class="body excerpt truncate">{{comment.body|urlize(40)}}</p>
         <a class="expand">Expand</a>
         <h6 class="title">{{comment.stitle}}</h6>
   			<div class="row meta-info">

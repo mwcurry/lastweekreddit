@@ -13,9 +13,11 @@ import time
 import model
 
 def queryContent(session, subreddit):
+	print "Connecting to Reddit"
 	user_agent = "Weekly Subreddit Summary by /u/iwasdaydreamnation"
 	r = praw.Reddit(user_agent=user_agent)
-	gilded = r.get_comments(subreddit, gilded_only = True, limit=50)
+	start = time.time()
+	gilded = r.get_comments(subreddit, gilded_only = True, limit=200)
 	sub = r.get_subreddit(subreddit)
 
 	comments = []
@@ -35,19 +37,14 @@ def queryContent(session, subreddit):
 
 	#Get Top Submissions & Comments
 	for submission in sub.get_top_from_week(limit=10):
+		item_time = time.time()
 		submissions.append(submission)
 		forest_comments = submission.comments
 		flat_comments = praw.helpers.flatten_tree(submission.comments)
 		for comment in flat_comments:
 			if not isinstance(comment, praw.objects.Comment): continue
 			comments.append(comment)
-		
-		'''# Get Top Comments
-		##submission.replace_more_comments(limit=None, threshold =0)
-		#http://praw.readthedocs.org/en/latest/pages/code_overview.html#praw.objects.Submission.replace_more_comments
-		for comment in submission.comments:
-			if not isinstance(comment, praw.objects.Comment): continue
-			comments.append(comment)'''
+	
 
 	# Store comments & submissions lists in database comments
 	model.Submissions.addSubmissions(session, subreddit, submissions)
@@ -69,5 +66,5 @@ if __name__=='__main__':
 	model.Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	subreddit = "asoiaf"
+	subreddit = "fitness"
 	queryContent(session, subreddit)
