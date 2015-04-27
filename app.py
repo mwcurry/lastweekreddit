@@ -35,7 +35,8 @@ def main():
 		APIconnect.queryContent(session, subreddit)
 
 	#get info from model
-	stop, savg, sstd, sfloor, subreddits = model.Submissions.getSubmissions(session,subreddit)
+	subreddits = model.Subreddits.getSubredditsUnique(session)
+	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
 	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
 	
 	#view
@@ -58,7 +59,8 @@ def sub(subreddit):
 		return redirect(subreddit + "/add", code=302)
 
 	#get info from model
-	stop, savg, sstd, sfloor, subreddits = model.Submissions.getSubmissions(session,subreddit)
+	subreddits = model.Subreddits.getSubredditsUnique(session)
+	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
 	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
 	
 	#view

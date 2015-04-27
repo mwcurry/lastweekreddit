@@ -23,23 +23,36 @@ class Subreddits(Base):
 	url = Column(Text)
 	description = Column(Text)
 	added = Column(DateTime)
-	updated = Column(DateTime, nullable=False)
+	updated = Column(DateTime)
 
 	@classmethod
 	def addSubreddit(class_, session, subreddit):
-		new_subreddit = Subreddits(id=subreddit.id,
-			title=subreddit.display_name,
-			url=subreddit._url,
-			description=subreddit.description,
-			added=datetime.utcnow(),
-			updated=datetime.utcnow())
-		session.add(new_submission)
+		new_subreddit = Subreddits(
+							id=subreddit.id,
+							title=subreddit.display_name,
+							url=subreddit._url,
+							description=subreddit.description,
+							added=datetime.utcnow(),
+							updated=datetime.utcnow())
+		session.add(new_subreddit)
+		session.commit()
 		print "Storing Subreddit %s" % subreddit.display_name
 
 	@classmethod
 	def checkSubreddit(class_, session, subreddit):
 		if session.query(exists().where(Subreddits.title == subreddit)).scalar(): return True
 		else: return False
+
+	@classmethod
+	def getSubreddits(class_, session, subreddit):
+		query = session.query(Subreddits).where(Subreddits.title == subreddit).order_by(desc(Subreddits.title)).all()
+		return query
+
+	@classmethod
+	def getSubredditsUnique(class_, session):
+		query = session.query(Subreddits.title.distinct().label("name"))
+		subs = [row.name.lower() for row in query.all()]
+		return subs
 
 
 class Submissions(Base):
@@ -102,12 +115,7 @@ class Submissions(Base):
 
 		top = session.query(Submissions).filter(Submissions.subreddit==subreddit).order_by(desc(Submissions.score)).all()
 
-
-		#Get subreddits that we have submissions for
-		query = session.query(Submissions.subreddit.distinct().label("subreddit"))
-		subs = [row.subreddit for row in query.all()]
-		
-		return top, avg, std, floor, subs
+		return top, avg, std, floor
 
 	@classmethod
 	def removeSubmissions(class_, subreddit):

@@ -47,6 +47,7 @@ def queryContent(session, subreddit):
 	# Store comments & submissions lists in database comments
 	model.Submissions.addSubmissions(session, subreddit, submissions)
 	model.Comments.addComments(session, subreddit, comments)
+	model.Subreddits.addSubreddit(session, sub)
 
 
 #Jinja filters
@@ -63,5 +64,5 @@ if __name__=='__main__':
 	model.Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	subreddit = "asoiaf"
+	subreddit = "fitness"
 	queryContent(session, subreddit)
