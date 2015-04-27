@@ -29,7 +29,7 @@ class Subreddits(Base):
 	def addSubreddit(class_, session, subreddit):
 		new_subreddit = Subreddits(
 							id=subreddit.id,
-							title=subreddit.display_name,
+							title=subreddit.display_name.lower(),
 							url=subreddit._url,
 							description=subreddit.description,
 							added=datetime.utcnow(),

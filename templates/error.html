@@ -24,8 +24,10 @@
   {% endif %}
   <a class="anchor" name="submissions"></a>
   <div class="jumbotron">
-    <h1>Not tracking {% if subreddit %}r/{{subreddit}}{% else %}that subreddit{% endif %}.</h1>
-    <p>Add it to be tracked:</p>
+    <h1>{% if subreddit %}Not tracking r/{{subreddit}}{% else %}Add a subreddit{% endif %}.</h1>
+    {% if subreddit %}
+      <p>Add it to be tracked:</p>
+    {% endif %}
     <div class="row">
     <div class="col-lg-6">
       <form method='POST'>

@@ -54,10 +54,9 @@ def sub(subreddit):
 
 
 	#check if we have subreddit in database
-	if not (model.Subreddits.checkSubreddit(session, subreddit):
+	if not (model.Subreddits.checkSubreddit(session, subreddit)):
 		return redirect(subreddit + "/add", code=302)
 	
-	return redirect(subreddit + "/add", code=302)
 	'''if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
 		#return render_template('error.html', subreddit=subreddit)
 		return redirect(subreddit + "/add", code=302)'''
@@ -79,7 +78,7 @@ def add_sub(subreddit=None):
 	session = DBSession()
 	if request.method == 'POST':
 		subreddit = str(request.form['to_add'])
-		if (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
+		if (model.Subreddits.checkSubreddit(session, subreddit)):
 			flash('Subreddit already tracked.', 'alert-warning')
 			return redirect(subreddit)
 		else:
