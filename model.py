@@ -44,11 +44,6 @@ class Subreddits(Base):
 		else: return False
 
 	@classmethod
-	def getSubreddits(class_, session, subreddit):
-		query = session.query(Subreddits).where(Subreddits.title == subreddit).order_by(desc(Subreddits.title)).all()
-		return query
-
-	@classmethod
 	def getSubredditsUnique(class_, session):
 		query = session.query(Subreddits.title.distinct().label("name"))
 		subs = [row.name.lower() for row in query.all()]

@@ -54,9 +54,13 @@ def sub(subreddit):
 
 
 	#check if we have subreddit in database
-	if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
-		#return render_template('error.html', subreddit=subreddit)
+	if not (model.Subreddits.checkSubreddit(session, subreddit):
 		return redirect(subreddit + "/add", code=302)
+	
+	return redirect(subreddit + "/add", code=302)
+	'''if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
+		#return render_template('error.html', subreddit=subreddit)
+		return redirect(subreddit + "/add", code=302)'''
 
 	#get info from model
 	subreddits = model.Subreddits.getSubredditsUnique(session)
