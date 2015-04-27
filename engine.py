@@ -36,13 +36,18 @@ def queryContent(session, subreddit):
 	#Get Top Submissions & Comments
 	for submission in sub.get_top_from_week(limit=10):
 		submissions.append(submission)
+		forest_comments = submission.comments
+		flat_comments = praw.helpers.flatten_tree(submission.comments)
+		for comment in flat_comments:
+			if not isinstance(comment, praw.objects.Comment): continue
+			comments.append(comment)
 		
-		# Get Top Comments
+		'''# Get Top Comments
 		##submission.replace_more_comments(limit=None, threshold =0)
 		#http://praw.readthedocs.org/en/latest/pages/code_overview.html#praw.objects.Submission.replace_more_comments
 		for comment in submission.comments:
 			if not isinstance(comment, praw.objects.Comment): continue
-			comments.append(comment)
+			comments.append(comment)'''
 
 	# Store comments & submissions lists in database comments
 	model.Submissions.addSubmissions(session, subreddit, submissions)
@@ -64,5 +69,5 @@ if __name__=='__main__':
 	model.Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	subreddit = "fitness"
+	subreddit = "asoiaf"
 	queryContent(session, subreddit)

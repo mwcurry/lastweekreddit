@@ -25,14 +25,8 @@ def main():
 	subreddit = "fitness"
 
 	#check if we have subreddit in database
-
 	if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
 		return render_template('error.html')
-
-	#check if we have content for subreddit
-
-	if not model.Submissions.checkSubmissions(session, subreddit) or not model.Comments.checkComments(session, subreddit):
-		APIconnect.queryContent(session, subreddit)
 
 	#get info from model
 	subreddits = model.Subreddits.getSubredditsUnique(session)
@@ -51,18 +45,21 @@ def sub(subreddit):
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
 	subreddit = subreddit
-
+	
+	#menu items
+	subreddits = model.Subreddits.getSubredditsUnique(session)
 
 	#check if we have subreddit in database
 	if not (model.Subreddits.checkSubreddit(session, subreddit)):
 		return redirect(subreddit + "/add", code=302)
 	
-	'''if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
-		#return render_template('error.html', subreddit=subreddit)
-		return redirect(subreddit + "/add", code=302)'''
+	#check if subreddit has content, if not let user know there is no content
+	if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
+		flash('Retrieving content from Reddit', 'alert-warning')
+		return render_template('content.html', subreddit=subreddit, menuitems = subreddits)
 
 	#get info from model
-	subreddits = model.Subreddits.getSubredditsUnique(session)
+
 	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
 	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
 	
