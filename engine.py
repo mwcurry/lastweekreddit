@@ -63,5 +63,5 @@ if __name__=='__main__':
 	model.Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	subreddit = "fitness"
+	subreddit = "asoiaf"
 	queryContent(session, subreddit)
