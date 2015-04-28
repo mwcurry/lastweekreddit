@@ -9,8 +9,6 @@ import pprint
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import time
-import re
-from jinja2 import evalcontextfilter, Markup, escape
  
 import model
 
@@ -53,35 +51,28 @@ def queryContent(session, subreddit):
 	model.Comments.addComments(session, subreddit, comments)
 	model.Subreddits.addSubreddit(session, sub)
 
+def updateContent():
+	engine = create_engine('sqlite:///submissions.db')
+	model.Base.metadata.bind = engine
+	DBSession = sessionmaker(bind=engine)
+	session = DBSession()
+	print "Connecting to Reddit"
+	user_agent = "Weekly Subreddit Summary by /u/iwasdaydreamnation"
+	r = praw.Reddit(user_agent=user_agent)
+	start = time.time()
 
-#Jinja filters
-def format_datetime(value):
-    date = time.strftime('%m-%d-%Y', time.gmtime(value))
-    return date
-def format_day(value):
-    day = time.strftime("%A", time.gmtime(value/1000))
-    return day
-def reddit_links(value):
-	link_re = re.compile(r'\[(.*?)\]\((.*?)\)+')
-	for find in re.findall(link_re, value):
-		url = '<a href =%s target="_blank">%s</a>' % (find[1], find[0])
-		link_text = "[%s](%s)" % (find[0], find[1])
-		value = value.replace(link_text, url)
-	return value
-
-@evalcontextfilter
-def nl2br(eval_ctx, value):
-	paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
-	result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', Markup('<br>\n'))
-		for p in paragraph_re.split(escape(value)))
-	if eval_ctx.autoescape:
-		result = Markup(result)
-	return result
+	#for subreddit in model.Subreddits.getSubredditsUnique(session):
+	for subreddit in ["fitness", "asoiaf"]:
+		print "Updating %s" % subreddit
+		model.Comments.removeComments(session, subreddit)
+		model.Submissions.removeSubmissions(session, subreddit)
+		print "Getting content"
+		queryContent(session, subreddit)
+	
 
 if __name__=='__main__': 
 	engine = create_engine('sqlite:///submissions.db')
 	model.Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	subreddit = "fitness"
-	queryContent(session, subreddit)
+	updateContent()

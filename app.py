@@ -4,16 +4,16 @@ from sqlalchemy import create_engine, exists, or_, and_, func, desc
 from sqlalchemy.orm import sessionmaker
 
 import engine as APIconnect
-
+import filters
 import model
 from model import Base
 
 
 app = Flask(__name__)
-app.jinja_env.filters['date'] = APIconnect.format_datetime
-app.jinja_env.filters['day'] = APIconnect.format_day
-app.jinja_env.filters['redditlink'] = APIconnect.reddit_links
-app.jinja_env.filters['nl2br'] = APIconnect.nl2br
+app.jinja_env.filters['date'] = filters.format_datetime
+app.jinja_env.filters['day'] = filters.format_day
+app.jinja_env.filters['redditlink'] = filters.reddit_links
+app.jinja_env.filters['nl2br'] = filters.nl2br
 app.secret_key = 'some_secret'
 
 

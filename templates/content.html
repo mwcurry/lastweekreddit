@@ -7,9 +7,16 @@
       <div class="row">
 			{% for submission in group %}
         <div class="col-md-6 item submission {% if submission.gilded == 1 %}gilded{% else %}non-gilded{% endif %}">
-        <a class="read-more" target="_blank" href="{{submission.permalink}}"></a>
+        <a class="read-more" target="_blank" href="{{submission.url}}"></a>
           <div class="row top-box {% if submission.gilded == 1 %}gold{% else %}regular{% endif %}">
-            <div class="col-xs-12 col-sm-12 text-right">
+            <div class="col-xs-9 col-sm-9 text-left">
+              {% if submission.url == submission.permalink %}
+              self post
+              {% else %}
+              {{submission.domain | truncate(40, True) | safe}}
+              {% endif %}
+            </div>
+            <div class="col-xs-3 col-sm-3 text-right">
               {{submission.created_utc|date}}
             </div>
           </div>
@@ -18,9 +25,9 @@
               <p class="lead"> {{submission.title | safe  }} </p>
             </div>
             <div class="col-xs-4 col-sm-4 text-right">
-                <p class ="author"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{submission.author}}</p>
+                <p class ="author"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{submission.author | truncate(13, True)}}</p>
                 <p class="score"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> {{submission.score}}</p>
-                <p class ="replies"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{submission.comments}}</p>
+                <p class ="replies"><a class="read-replies" target="_blank" href="{{submission.permalink}}"></a><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{submission.comments}}</p>
             </div>
           </div>
         </div>
@@ -46,18 +53,18 @@
         <a class="read-more" target="_blank" href="{{comment.url}}?context=3"></a>
           <div class="row top-box {% if comment.gilded == 1 %}gold{% else %}regular{% endif %}">
             <div class="col-xs-9 col-sm-9 text-left">
-              {{comment.stitle | safe}}
+              {{comment.stitle | truncate(120, True) | safe}}
             </div>
             <div class="col-xs-3 col-sm-3 text-right">
               {{comment.created_utc|date}}
             </div>
           </div>
           <div class="row comment-body">
-            <div class="col-xs-8 col-sm-8 text-left">
-              {{comment.body | redditlink | safe | urlize() | nl2br | safe  }}
+            <div class="col-xs-8 col-sm-8 truncate text-left">
+              {{comment.body | redditlink | safe | urlize() | nl2br | safe }}
             </div>
             <div class="col-xs-4 col-sm-4 text-right">
-                <p class ="author"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{comment.author}}</p>
+                <p class ="author"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{comment.author | truncate(13, True)}}</p>
                 <p class="score"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> {{comment.score}}</p>
                 <p class ="replies"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{comment.replies}}</p>
             </div>

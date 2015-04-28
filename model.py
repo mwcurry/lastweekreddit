@@ -30,7 +30,7 @@ class Subreddits(Base):
 	@classmethod
 	def addSubreddit(class_, session, subreddit):
 		if session.query(exists().where(Subreddits.title == subreddit.display_name.lower())).scalar():
-			print "Subreddit %s already exists!" % Subreddits.title 
+			print "Subreddit %s already exists!" % subreddit.display_name.lower() 
 		else:
 			new_subreddit = Subreddits(
 								id=subreddit.id,
@@ -64,6 +64,7 @@ class Submissions(Base):
 	comments = Column(Integer)
 	url = Column(Text)
 	permalink = Column(Text)
+	domain = Column(Integer)
 	gilded = Column(Integer)
 	subreddit = Column(Text)
 	created_utc = Column(Integer)
@@ -83,6 +84,7 @@ class Submissions(Base):
 										comments=len(submission.comments),
 										url=submission.url,
 										permalink=submission.permalink,
+										domain = submission.domain,
 										gilded=submission.gilded,
 										subreddit=subreddit,
 										created_utc=submission.created_utc)
@@ -118,12 +120,7 @@ class Submissions(Base):
 		return top, avg, std, floor
 
 	@classmethod
-	def removeSubmissions(class_, subreddit):
-		engine = create_engine('sqlite:///submissions.db')
-		Base.metadata.bind = engine
-		DBSession = sessionmaker(bind=engine)
-		session = DBSession()
-
+	def removeSubmissions(class_, session, subreddit):
 		session.query(Submissions).filter(Submissions.subreddit==subreddit).delete()
 		session.commit()
 
@@ -200,12 +197,7 @@ class Comments(Base):
 		return top, avg, std, floor, titles
 	
 	@classmethod
-	def removeComments(class_, subreddit):
-		engine = create_engine('sqlite:///submissions.db')
-		Base.metadata.bind = engine
-		DBSession = sessionmaker(bind=engine)
-		session = DBSession()
-
+	def removeComments(class_, session, subreddit):
 		session.query(Comments).filter(Comments.subreddit==subreddit).delete()
 		session.commit()
 

@@ -29,6 +29,10 @@ $(document).ready(function() {
 			$("[name='toggleGold']").bootstrapSwitch('toggleReadonly');
 		}
 	});
+	$('p:contains(">")').wrap("<blockquote class='quote'></blockquote>");
+//	var blockQuote = $('p:contains(">")').html();
+//	blockQuote.replace(">","");
+//	$('p:contains(">")').html(bloackQuote);
 });
 
 //Javascript to expand thanks to Diego F.
