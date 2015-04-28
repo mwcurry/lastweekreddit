@@ -39,7 +39,7 @@
 		{% for comment in group %}
 			{# Todo: Get Submission Name from Submission ID here #}
       <div class="row">
-        <div class="col-md-12 item comment">
+        <div class="col-md-12 item comment {% if comment.gilded == 1 %}gilded{% else %}non-gilded{% endif %}">
         <a class="read-more" target="_blank" href="{{comment.url}}?context=3"></a>
           <div class="row top-box {% if comment.gilded == 1 %}gold{% else %}regular{% endif %}">
             <div class="col-xs-9 col-sm-9 text-left">

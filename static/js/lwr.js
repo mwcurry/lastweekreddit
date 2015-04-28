@@ -10,7 +10,7 @@ $(document).ready(function() {
 		labelText: "Gold",
 		handleWidth: "60",
 		onSwitchChange:function(){
-			$(".gold").slideToggle();
+			$(".gilded").slideToggle();
 			$("[name='toggleGoldOnly']").bootstrapSwitch('toggleReadonly');
 		}
 	});
@@ -25,7 +25,7 @@ $(document).ready(function() {
 		labelText: "Gold Only",
 		handleWidth: "60",
 		onSwitchChange:function(){
-			$(".regular").slideToggle();
+			$(".non-gilded").slideToggle();
 			$("[name='toggleGold']").bootstrapSwitch('toggleReadonly');
 		}
 	});

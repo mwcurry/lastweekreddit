@@ -29,28 +29,6 @@ a.anchor{
   -webkit-box-orient: vertical;
 }
 
-/*.submissions .title {
-	background-color: #03A9F4;
-	color: #FFFFFF;
-	padding-top: 25px;
-	padding-bottom:25px;
-	text-align: center;
-	border-bottom: 1px #B6B6B6 solid;
-	margin-top: -10px;
-}*/
-
-/*.gold .body:before, .gold .title.lead:before {
-	display: inline-block;
-	content: "";
-	height: 20px;
-	width: 20px;
-	background: url('/static/img/star-circle.png');
-	background-size: contain;
-	background-repeat: no-repeat;	
-	margin-bottom: 1px;
-	margin-right: 5px;
-}*/
-
 
 .item {
 	margin-bottom: 1.5em;
@@ -59,18 +37,6 @@ a.anchor{
 	border-left: 1px #ddd solid;
 	box-sizing: border-box;
 	padding: 0px 15px;*/
-}
-
-.top-box {
-	color: white;
-	padding-right: 10px;
-	margin-bottom: .5em;
-	background-color: #0288D1;
-}
-
-
-.gold {
-	background-color: #f0ad4e;
 }
 
 .item a {
@@ -84,4 +50,16 @@ a.anchor{
     background-color: #FFF; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
+}
+
+
+.top-box {
+	color: white;
+	padding-right: 10px;
+	margin-bottom: .5em;
+	background-color: #0288D1;
+}
+
+.gold {
+  background-color: #f0ad4e;
 }
