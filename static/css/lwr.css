@@ -13,7 +13,7 @@ a.anchor{
 	visibility: hidden;
 }
 
-.truncate {
+/*.truncate {
   overflow : hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -27,7 +27,7 @@ a.anchor{
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
+}*/
 
 
 .item {
@@ -58,7 +58,11 @@ a.anchor{
 	padding-right: 10px;
 	margin-bottom: .5em;
 	background-color: #0288D1;
-  border: 2px solid white;
+  border: 3px solid white;
+}
+
+.comment > .top-box {
+  min-height: 46px;
 }
 
 .gold {
