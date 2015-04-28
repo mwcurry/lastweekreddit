@@ -43,7 +43,7 @@
         <a class="read-more" target="_blank" href="{{comment.url}}?context=3"></a>
           <div class="row top-box {% if comment.gilded == 1 %}gold{% else %}regular{% endif %}">
             <div class="col-xs-9 col-sm-9 text-left">
-              {{comment.stitle}}
+              {{comment.stitle | safe}}
             </div>
             <div class="col-xs-3 col-sm-3 text-right">
               {{comment.created_utc|date}}

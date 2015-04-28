@@ -53,7 +53,7 @@ a.anchor{
 
 
 .item {
-	margin-bottom: 1em;
+	margin-bottom: 1.5em;
 
 /* 	background-color: #EEEEEE;
 	border-left: 1px #ddd solid;
@@ -65,22 +65,15 @@ a.anchor{
 	color: white;
 	padding-right: 10px;
 	margin-bottom: .5em;
-}
-
-
-.comment .top-box {
 	background-color: #0288D1;
 }
 
-.submission .top-box {
-	background-color: #0288D1;
-}
 
-.gold .top-box {
+.gold {
 	background-color: #f0ad4e;
 }
 
-.top-box a {
+.item a {
 	position: absolute;
     width: 100%;
     height: 100%;
