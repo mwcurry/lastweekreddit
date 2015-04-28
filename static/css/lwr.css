@@ -39,7 +39,7 @@ a.anchor{
 	margin-top: -10px;
 }*/
 
-.gold .body:before, .gold .title.lead:before {
+/*.gold .body:before, .gold .title.lead:before {
 	display: inline-block;
 	content: "";
 	height: 20px;
@@ -49,7 +49,7 @@ a.anchor{
 	background-repeat: no-repeat;	
 	margin-bottom: 1px;
 	margin-right: 5px;
-}
+}*/
 
 
 .item {

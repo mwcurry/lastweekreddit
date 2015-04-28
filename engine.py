@@ -9,6 +9,8 @@ import pprint
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import time
+import re
+from jinja2 import evalcontextfilter, Markup, escape
  
 import model
 
@@ -59,7 +61,22 @@ def format_datetime(value):
 def format_day(value):
     day = time.strftime("%A", time.gmtime(value/1000))
     return day
+def reddit_links(value):
+	link_re = re.compile(r'\[(.*?)\]\((.*?)\)+')
+	for find in re.findall(link_re, value):
+		url = '<a href =%s target="_blank">%s</a>' % (find[1], find[0])
+		link_text = "[%s](%s)" % (find[0], find[1])
+		value = value.replace(link_text, url)
+	return value
 
+@evalcontextfilter
+def nl2br(eval_ctx, value):
+	paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
+	result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', '<br>\n')
+		for p in paragraph_re.split(escape(value)))
+	if eval_ctx.autoescape:
+		result = Markup(result)
+	return result
 
 if __name__=='__main__': 
 	engine = create_engine('sqlite:///submissions.db')

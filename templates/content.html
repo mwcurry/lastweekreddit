@@ -35,15 +35,17 @@
     {% endfor %}
   </ul>
 --> 
-	{% for group in comments|batch(3) %}
+	{% for group in comments|batch(2) %}
 <!--	<div class="row comments"> -->
 		{% for comment in group %}
 			{# Todo: Get Submission Name from Submission ID here #}
-			<div class="col-md-6 item {% if comment.gilded == 1 %}gold{% else %}regular{% endif %} comment">
-        <div class="top-box {% if comment.gilded == 1 %}gold{% endif %} text-right"><a class="read-more" target="_blank" href="{{comment.url}}?context=3"></a>{{ comment.created_utc|date}}</div>
-        <p class="body excerpt truncate">{{comment.body|urlize(40)}}</p>
+			<div class="col-md-12 item {% if comment.gilded == 1 %}gold{% else %}regular{% endif %} comment">
+        <div class="top-box {% if comment.gilded == 1 %}gold{% endif %} text-right">
+          <a class="read-more" target="_blank" href="{{comment.url}}?context=3"></a>{{comment.stitle}} {{ comment.created_utc|date}}
+        </div>
+        <span class="body excerpt truncate"><p>{{comment.body|redditlink|safe|nl2br|safe|urlize(40)}}</p></span>
         <a class="expand">Expand</a>
-        <h6 class="title">{{comment.stitle}}</h6>
+        <h6 class="title"></h6>
   			<div class="row meta-info">
           <div class="col-sm-7">
             <p class ="author"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{comment.author}}</p>

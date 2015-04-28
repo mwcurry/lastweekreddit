@@ -31,15 +31,10 @@ $(document).ready(function() {
 	});
 });
 
-$(document).ready(function(){
-    $('#modal').modal("show");
-    
-});
-
 //Javascript to expand thanks to Diego F.
 $(document).ready(function(e) {
 	$("a.expand").click(function(e){
-	  var excerpt = $(e.target).parents(".item").find("p.excerpt");
+	  var excerpt = $(e.target).parents(".item").find("span.excerpt");
 	  var link = $(e.target);
 	  if (excerpt.hasClass("truncate")) {
 	    excerpt.removeClass("truncate");

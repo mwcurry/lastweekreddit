@@ -12,6 +12,8 @@ from model import Base
 app = Flask(__name__)
 app.jinja_env.filters['date'] = APIconnect.format_datetime
 app.jinja_env.filters['day'] = APIconnect.format_day
+app.jinja_env.filters['redditlink'] = APIconnect.reddit_links
+app.jinja_env.filters['nl2br'] = APIconnect.nl2br
 app.secret_key = 'some_secret'
 
 
