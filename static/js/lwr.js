@@ -30,11 +30,15 @@ $(document).ready(function() {
 		}
 	});
 	$('p:contains(">")').wrap("<blockquote class='quote'></blockquote>");
+	$('#addSub').on('click', function () {
+		$('#addSub').button('loading');
+	});
+});
 
 //	var blockQuote = $('p:contains(">")').html();
 //	blockQuote.replace(">","");
 //	$('p:contains(">")').html(bloackQuote);
-});
+
 
 //Javascript to expand thanks to Diego F.
 $(document).ready(function(e) {
@@ -69,7 +73,7 @@ var reverseComments = function() {
 	comments.remove()
 	var arr = jQuery.makeArray(comments);
 	$("#c-container").append(arr.reverse())
-}
+};
 
 var groupComments = function() {
 	var comments = $(".item.comment").parent();
@@ -79,4 +83,4 @@ var groupComments = function() {
 	var submissions = $(".comment-parent").text().trim();
 	var arr2 = jQuery.makeArray(submissions);
 	console.log($.unique(arr2))
-}
+};

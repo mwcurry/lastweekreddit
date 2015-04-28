@@ -34,7 +34,7 @@
         <div class="input-group">
           <input name="to_add" type="text" class="form-control" placeholder="{% if subreddit %}{{subreddit}}{% else %}Enter subreddit name (e.g. 'funny')…{% endif %}">
           <span class="input-group-btn" method="POST">
-            <button class="btn btn-primary" type="submit">Add it</button>
+            <button id="addSub" class="btn btn-primary" type="button" data-loading-text="Loading..." autocomplete="off">Add it</button>
           </span>
         </div><!-- /input-group -->
       </form>
