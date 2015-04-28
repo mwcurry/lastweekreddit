@@ -53,9 +53,7 @@ a.anchor{
 
 
 .item {
-	min-height: 200px;
 	margin-bottom: 1em;
-	position: relative;
 
 /* 	background-color: #EEEEEE;
 	border-left: 1px #ddd solid;
@@ -64,9 +62,9 @@ a.anchor{
 }
 
 .top-box {
-	position: relative;
 	color: white;
 	padding-right: 10px;
+	margin-bottom: .5em;
 }
 
 
@@ -93,12 +91,4 @@ a.anchor{
     background-color: #FFF; /* Fix to make div clickable in IE */
     opacity: 0; /* Fix to make div clickable in IE */
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
-}
-
-.meta-info {
-  vertical-align: bottom;
-  position: absolute;
-  width: 100%;
-  bottom: 0px;
-  /*min-width: 350px;*/
 }

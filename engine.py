@@ -72,7 +72,7 @@ def reddit_links(value):
 @evalcontextfilter
 def nl2br(eval_ctx, value):
 	paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
-	result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', '<br>\n')
+	result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', Markup('<br>\n'))
 		for p in paragraph_re.split(escape(value)))
 	if eval_ctx.autoescape:
 		result = Markup(result)
