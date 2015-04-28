@@ -3,26 +3,29 @@
   <div class="container">
   <a class="anchor" name="submissions"></a>
 	<h1>Top Submissions in r/{{subreddit}}</h1>
-		{% for group in submissions|batch(3) %}
-<!--		<div class="row submissions"> -->
+		{% for group in submissions|batch(2) %}
+      <div class="row">
 			{% for submission in group %}
-				<div class="col-md-6 item {% if submission.gilded == 1 %}gold{% else %}regular{% endif %} submission">
-          <div class="top-box text-right"><a class="read-more" target="_blank" href="{{submission.permalink}}"></a>{{ submission.created_utc|date}}</div>
-					<p class="title lead">{{submission.title}}</p>
-          <div class="row meta-info">
-            <div class="col-sm-6">
-              <p class ="author"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{submission.author}}</p>
+        <div class="col-md-6 item submission {% if submission.gilded == 1 %}gilded{% else %}non-gilded{% endif %}">
+        <a class="read-more" target="_blank" href="{{submission.permalink}}"></a>
+          <div class="row top-box {% if submission.gilded == 1 %}gold{% else %}regular{% endif %}">
+            <div class="col-xs-12 col-sm-12 text-right">
+              {{submission.created_utc|date}}
             </div>
-            <div class="col-sm-3">
-              <p class="score"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> {{submission.score}}</p>
+          </div>
+          <div class="row submission-body">
+            <div class="col-xs-8 col-sm-8 text-left">
+              <p class="lead"> {{submission.title | safe  }} </p>
             </div>
-            <div class="col-sm-3">
-              <p class ="replies"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{submission.comments}}</p>
+            <div class="col-xs-4 col-sm-4 text-right">
+                <p class ="author"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{submission.author}}</p>
+                <p class="score"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> {{submission.score}}</p>
+                <p class ="replies"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{submission.comments}}</p>
             </div>
-				  </div>
+          </div>
         </div>
-			{% endfor %}
-<!--		</div> -->
+      {% endfor %}
+      </div>
 		{% endfor %}
   </div>
   <div class="container">
