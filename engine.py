@@ -56,13 +56,9 @@ def updateContent():
 	model.Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	print "Connecting to Reddit"
-	user_agent = "Weekly Subreddit Summary by /u/iwasdaydreamnation"
-	r = praw.Reddit(user_agent=user_agent)
-	start = time.time()
 
-	#for subreddit in model.Subreddits.getSubredditsUnique(session):
-	for subreddit in ["fitness", "asoiaf"]:
+	for subreddit in model.Subreddits.getSubredditsUnique(session):
+	#for subreddit in ["fitness", "asoiaf"]:
 		print "Updating %s" % subreddit
 		model.Comments.removeComments(session, subreddit)
 		model.Submissions.removeSubmissions(session, subreddit)

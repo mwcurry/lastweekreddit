@@ -30,6 +30,7 @@ $(document).ready(function() {
 		}
 	});
 	$('p:contains(">")').wrap("<blockquote class='quote'></blockquote>");
+
 //	var blockQuote = $('p:contains(">")').html();
 //	blockQuote.replace(">","");
 //	$('p:contains(">")').html(bloackQuote);
@@ -62,3 +63,20 @@ $(window).on('scroll', function() {
         }
     });
 });
+
+var reverseComments = function() {
+	var comments = $(".item.comment").parent();
+	comments.remove()
+	var arr = jQuery.makeArray(comments);
+	$("#c-container").append(arr.reverse())
+}
+
+var groupComments = function() {
+	var comments = $(".item.comment").parent();
+	//comments.remove()
+	var arr = jQuery.makeArray(comments);
+	//get submissions
+	var submissions = $(".comment-parent").text().trim();
+	var arr2 = jQuery.makeArray(submissions);
+	console.log($.unique(arr2))
+}
