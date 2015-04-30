@@ -87,6 +87,7 @@ def add_sub(subreddit=None):
 			flash('Subreddit already tracked.', 'alert-warning')
 			return redirect(subreddit)
 		else:
+			
 			APIconnect.queryContent.delay(None, subreddit)
 			return redirect(subreddit)
 	else:

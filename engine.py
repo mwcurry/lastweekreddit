@@ -61,14 +61,14 @@ def queryContent(session, subreddit):
 
 @celapp.task
 def updateContent(session=None):
-	if not sesion:
+	if not session:
 		engine = create_engine('sqlite:///submissions.db')
 		model.Base.metadata.bind = engine
 		DBSession = sessionmaker(bind=engine)
 		session = DBSession()
 
-	for subreddit in model.Subreddits.getSubredditsUnique(session):
-	#for subreddit in ["fitness", "asoiaf"]:
+	#for subreddit in model.Subreddits.getSubredditsUnique(session):
+	for subreddit in ["fitness", "asoiaf"]:
 		print "Updating %s" % subreddit
 		model.Comments.removeComments(session, subreddit)
 		model.Submissions.removeSubmissions(session, subreddit)
@@ -80,4 +80,5 @@ if __name__=='__main__':
 	engine = create_engine('sqlite:///submissions.db')
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	updateContent().delay()
+	#updateContent().delay()
+	updateContent()

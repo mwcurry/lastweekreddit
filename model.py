@@ -5,8 +5,8 @@ SQL Alchemy database clases
 import os
 import sys
 import praw
-from sqlalchemy import Column, ForeignKey, Integer, Text, DateTime
-from sqlalchemy import create_engine, exists, or_, and_, func, desc
+from sqlalchemy import Column, ForeignKey, Integer, Text, DateTime, ForeignKey
+from sqlalchemy import create_engine, exists, or_, and_, func, desc, update
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -19,8 +19,8 @@ Base = declarative_base()
 
 class Subreddits(Base):
 	__tablename__ = 'subreddits'
-	id = Column(Text, primary_key=True)
-	title = Column(Text)
+	id = Column(Text)
+	title = Column(Text, primary_key=True)
 	url = Column(Text)
 	description = Column(Text)
 	added = Column(DateTime)
@@ -53,9 +53,24 @@ class Subreddits(Base):
 		subs = [row.name.lower() for row in query.all()]
 		return subs
 
+	@classmethod
+	def updateSubreddit(class_, session, subreddit):
+		if not (session.query(exists().where(Subreddits.title == subreddit.display_name.lower())).scalar()):
+			print "Subreddit %s doesn't exists. Adding it." % subreddit.display_name.lower() 
+			Subreddits.addSubreddit(session, subreddit)
+		else:
+			update(Subreddits).where(Subreddits.c.title==subreddit).values(
+								id=subreddit.id,
+								url=subreddit._url,
+								description=subreddit.description,
+								added=datetime.utcnow(),
+								updated=datetime.utcnow())
+			session.commit()
+			print "Updating Subreddit %s" % subreddit.display_name
+
 
 class Submissions(Base):
-	__tablename__ = 'submission'
+	__tablename__ = 'submissions'
 	id = Column(Text, primary_key=True)
 	title = Column(Text)
 	score = Column(Integer)
@@ -65,7 +80,7 @@ class Submissions(Base):
 	permalink = Column(Text)
 	domain = Column(Integer)
 	gilded = Column(Integer)
-	subreddit = Column(Text)
+	subreddit = Column(Text, ForeignKey("subreddits.title"))
 	created_utc = Column(Integer)
 
 	@classmethod
@@ -139,7 +154,7 @@ class Comments(Base):
 	###sid = Column(String(250), ForeignKey('submission.id')) 
 	sid = Column(Text)
 	stitle = Column(Text)
-	subreddit = Column(Text)
+	subreddit = Column(Text, ForeignKey("subreddits.title"))
 	created_utc = Column(Integer)
 
 	
@@ -201,7 +216,6 @@ class Comments(Base):
 		session.commit()
 
 if __name__ == '__main__':
-	Base = declarative_base()
 	engine = create_engine('sqlite:///submissions.db')
 	Base.metadata.create_all(engine)
 
