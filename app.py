@@ -26,12 +26,15 @@ def main():
 	session = DBSession()
 	subreddit = "fitness"
 
+	#menu items
+	subreddits = model.Subreddits.getSubredditsUnique(session)
+
+
 	#check if we have subreddit in database
 	if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
 		return render_template('error.html')
 
 	#get info from model
-	subreddits = model.Subreddits.getSubredditsUnique(session)
 	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
 	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
 	
@@ -87,11 +90,10 @@ def add_sub(subreddit=None):
 			flash('Subreddit already tracked.', 'alert-warning')
 			return redirect(subreddit)
 		else:
-			
+			model.Subreddits.quickAddSubreddit(session, subreddit)
 			APIconnect.queryContent.delay(None, subreddit)
 			return redirect(subreddit)
 	else:
-		
 		return render_template('error.html', subreddit=subreddit, menuitems = subreddits)
 
 

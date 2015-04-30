@@ -57,7 +57,7 @@ def queryContent(session, subreddit):
 	# Store comments & submissions lists in database comments
 	model.Submissions.addSubmissions(session, subreddit, submissions)
 	model.Comments.addComments(session, subreddit, comments)
-	model.Subreddits.addSubreddit(session, sub)
+	model.Subreddits.updateSubreddit(session, sub, True)
 
 @celapp.task
 def updateContent(session=None):

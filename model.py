@@ -54,12 +54,28 @@ class Subreddits(Base):
 		return subs
 
 	@classmethod
+	def quickAddSubreddit(class_, session, subreddit):
+		if session.query(exists().where(Subreddits.title == subreddit.lower())).scalar():
+			print "Subreddit %s already exists!" % subreddit.lower() 
+		else:
+			new_subreddit = Subreddits(
+								id=None,
+								title=subreddit.lower(),
+								url=None,
+								description=None,
+								added=datetime.utcnow(),
+								updated=None)
+			session.add(new_subreddit)
+			session.commit()
+			print "Storing Subreddit %s" % subreddit.lower()
+
+	@classmethod
 	def updateSubreddit(class_, session, subreddit):
 		if not (session.query(exists().where(Subreddits.title == subreddit.display_name.lower())).scalar()):
 			print "Subreddit %s doesn't exists. Adding it." % subreddit.display_name.lower() 
 			Subreddits.addSubreddit(session, subreddit)
 		else:
-			update(Subreddits).where(Subreddits.c.title==subreddit).values(
+			update(Subreddits).where(Subreddits.title==subreddit).values(
 								id=subreddit.id,
 								url=subreddit._url,
 								description=subreddit.description,
