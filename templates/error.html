@@ -16,7 +16,7 @@
                 <span class="sr-only">45% Complete</span>
                 </div>
               </div>
-              <button type="button" id="addButton" class="btn btn-primary loading" data-complete-text="View "data-loading-text="Loading..." disabled="disabled">Loading…</button> <!-- data-dismiss="modal" -->
+              <button type="submit" id="addButton" class="btn btn-primary loading" data-complete-text="View "data-loading-text="Loading..." disabled="disabled">Loading…</button> <!-- data-dismiss="modal" -->
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -34,7 +34,7 @@
         <div class="input-group">
           <input name="to_add" type="text" class="form-control" placeholder="{% if subreddit %}{{subreddit}}{% else %}Enter subreddit name (e.g. 'funny')…{% endif %}">
           <span class="input-group-btn" method="POST">
-            <button id="addSub" class="btn btn-primary" type="button" data-loading-text="Loading..." autocomplete="off">Add it</button>
+            <button id="addSub" class="btn btn-primary" type="submit" data-loading-text="Loading..." autocomplete="off">Add it</button>
           </span>
         </div><!-- /input-group -->
       </form>

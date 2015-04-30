@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, exists, or_, and_, func, desc
 from sqlalchemy.orm import sessionmaker
 
 import engine as APIconnect
+from celeryconfig import celapp
 import filters
 import model
 from model import Base
@@ -21,7 +22,6 @@ app.secret_key = 'some_secret'
 def main():
 	#create sessions
 	engine = create_engine('sqlite:///submissions.db')
-	Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
 	subreddit = "fitness"
@@ -43,7 +43,6 @@ def main():
 def sub(subreddit):
 	#create sessions
 	engine = create_engine('sqlite:///submissions.db')
-	Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
 	subreddit = subreddit
@@ -72,9 +71,12 @@ def sub(subreddit):
 @app.route('/add', methods=['GET', 'POST'])
 def add_sub(subreddit=None):
 	engine = create_engine('sqlite:///submissions.db')
-	Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
+
+	#check if we have subreddit in database and foward to subreddit page
+	if  (model.Subreddits.checkSubreddit(session, subreddit)):
+		return redirect(subreddit, code=302)
 
 	#menu items
 	subreddits = model.Subreddits.getSubredditsUnique(session)
@@ -85,9 +87,10 @@ def add_sub(subreddit=None):
 			flash('Subreddit already tracked.', 'alert-warning')
 			return redirect(subreddit)
 		else:
-			APIconnect.queryContent(session, subreddit)
+			APIconnect.queryContent.delay(None, subreddit)
 			return redirect(subreddit)
 	else:
+		
 		return render_template('error.html', subreddit=subreddit, menuitems = subreddits)
 
 

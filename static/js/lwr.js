@@ -31,7 +31,7 @@ $(document).ready(function() {
 	});
 	$('p:contains(">")').wrap("<blockquote class='quote'></blockquote>");
 	$('#addSub').on('click', function () {
-		$('#addSub').button('loading');
+		$('#addSub').submit('loading');
 	});
 });
 

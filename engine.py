@@ -12,7 +12,15 @@ import time
  
 import model
 
+from celeryconfig import celapp
+
+
+@celapp.task
 def queryContent(session, subreddit):
+	engine = create_engine('sqlite:///submissions.db')
+	DBSession = sessionmaker(bind=engine)
+	session = DBSession()
+
 	print "Connecting to Reddit"
 	user_agent = "Weekly Subreddit Summary by /u/iwasdaydreamnation"
 	r = praw.Reddit(user_agent=user_agent)
@@ -51,11 +59,13 @@ def queryContent(session, subreddit):
 	model.Comments.addComments(session, subreddit, comments)
 	model.Subreddits.addSubreddit(session, sub)
 
-def updateContent():
-	engine = create_engine('sqlite:///submissions.db')
-	model.Base.metadata.bind = engine
-	DBSession = sessionmaker(bind=engine)
-	session = DBSession()
+@celapp.task
+def updateContent(session=None):
+	if not sesion:
+		engine = create_engine('sqlite:///submissions.db')
+		model.Base.metadata.bind = engine
+		DBSession = sessionmaker(bind=engine)
+		session = DBSession()
 
 	for subreddit in model.Subreddits.getSubredditsUnique(session):
 	#for subreddit in ["fitness", "asoiaf"]:
@@ -68,7 +78,6 @@ def updateContent():
 
 if __name__=='__main__': 
 	engine = create_engine('sqlite:///submissions.db')
-	model.Base.metadata.bind = engine
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	updateContent()
+	updateContent().delay()

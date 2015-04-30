@@ -15,7 +15,6 @@ import numpy
 
 import time
 
-
 Base = declarative_base()
 
 class Subreddits(Base):
@@ -202,6 +201,7 @@ class Comments(Base):
 		session.commit()
 
 if __name__ == '__main__':
+	Base = declarative_base()
 	engine = create_engine('sqlite:///submissions.db')
 	Base.metadata.create_all(engine)
 
