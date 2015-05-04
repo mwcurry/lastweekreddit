@@ -24,22 +24,14 @@ def main():
 	engine = create_engine('sqlite:///submissions.db')
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	subreddit = "fitness"
 
 	#menu items
-	subreddits = model.Subreddits.getSubredditsUnique(session)
-
-
-	#check if we have subreddit in database
-	if not (model.Submissions.checkSubreddit(session, subreddit) and (model.Comments.checkSubreddit(session, subreddit))):
-		return render_template('error.html')
-
-	#get info from model
-	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
-	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
+	menuitems = model.Subreddits.getSubredditsUnique(session)
+	
+	subreddits = model.Subreddits.getSubreddits(session)
 	
 	#view
-	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit, titles = titles, menuitems = subreddits)
+	return render_template('home.html', subreddits = subreddits, menuitems = menuitems)
 
 
 @app.route('/<subreddit>/')
@@ -50,17 +42,20 @@ def sub(subreddit):
 	session = DBSession()
 	subreddit = subreddit
 	
-	#menu items
-	subreddits = model.Subreddits.getSubredditsUnique(session)
-
+	
 	#check if we have subreddit in database
 	if not (model.Subreddits.checkSubreddit(session, subreddit)):
 		return redirect(subreddit + "/add", code=302)
 	
+	#menu items
+	subreddits = model.Subreddits.getSubredditsUnique(session)
+	sub = model.Subreddits.getSubreddit(session, subreddit)
+
+	
 	#check if subreddit has content, if not let user know there is no content
 	if not (model.Submissions.checkSubreddit(session, subreddit) and model.Comments.checkSubreddit(session, subreddit)):
 		flash('Retrieving content from Reddit', 'alert-warning')
-		return render_template('content.html', subreddit=subreddit, menuitems = subreddits)
+		return render_template('content.html', subreddit=sub, menuitems = subreddits, progress = True)
 
 	#get info from model
 
@@ -68,7 +63,7 @@ def sub(subreddit):
 	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
 	
 	#view
-	return render_template('content.html', comments=ctop, submissions=stop, subreddit = subreddit, titles = titles, menuitems = subreddits)
+	return render_template('content.html', comments=ctop, submissions=stop, subreddit = sub, titles = titles, menuitems = subreddits)
 
 @app.route('/<subreddit>/add', methods=['GET', 'POST'])
 @app.route('/add', methods=['GET', 'POST'])

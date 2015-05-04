@@ -2,7 +2,8 @@
   {% block content %}
   <div id="sub-container" class="container">
   <a class="anchor" name="submissions"></a>
-	<h1>Top Submissions in r/{{subreddit}}</h1>
+	<h1>Top Submissions in r/{{subreddit.title}}</h1>
+    <p> {%if subreddit.updated%}Updated: {{subreddit.updated.strftime('%Y-%m-%d') }}{%endif%}</p>
 		{% for group in submissions|batch(2) %}
       <div class="row">
 			{% for submission in group %}
@@ -37,14 +38,16 @@
   </div>
   <div id="c-container" class="container">
   <a class="anchor" name="comments"></a>
-	<h1>Top Comments in r/{{subreddit}}</h1>
-<!-- remove subreddit listing for now  
-  <ul>
-    {% for title in titles %}
-    <li>{{title}}</li>
-    {% endfor %}
-  </ul>
---> 
+	<h1>Top Comments in r/{{subreddit.title}}</h1>
+    <p> {%if subreddit.updated%}Updated: {{subreddit.updated.strftime('%Y-%m-%d') }}{%endif%}</p>
+    <div class="list-group">
+      {% for title in titles %}
+      <a href="#comments" class="list-group-item comment-thread">
+            <span class="badge">x</span>
+            <span class="title">{{title}}</span>
+      </a>
+      {%endfor%}
+    </div>
 	{% for group in comments|batch(2) %}
     <div class="row">
 		{% for comment in group %}

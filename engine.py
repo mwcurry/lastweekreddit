@@ -57,28 +57,40 @@ def queryContent(session, subreddit):
 	# Store comments & submissions lists in database comments
 	model.Submissions.addSubmissions(session, subreddit, submissions)
 	model.Comments.addComments(session, subreddit, comments)
-	model.Subreddits.updateSubreddit(session, sub, True)
+	model.Subreddits.updateSubreddit(session, sub)
 
 @celapp.task
-def updateContent(session=None):
+def updateAllSubreddits(session=None):
 	if not session:
 		engine = create_engine('sqlite:///submissions.db')
 		model.Base.metadata.bind = engine
 		DBSession = sessionmaker(bind=engine)
 		session = DBSession()
 
-	#for subreddit in model.Subreddits.getSubredditsUnique(session):
-	for subreddit in ["fitness", "asoiaf"]:
+	for subreddit in model.Subreddits.getSubredditsUnique(session):
 		print "Updating %s" % subreddit
 		model.Comments.removeComments(session, subreddit)
 		model.Submissions.removeSubmissions(session, subreddit)
 		print "Getting content"
 		queryContent(session, subreddit)
+
+@celapp.task
+def updateSubreddit(subreddit, session=None):
+	if not session:
+		engine = create_engine('sqlite:///submissions.db')
+		model.Base.metadata.bind = engine
+		DBSession = sessionmaker(bind=engine)
+		session = DBSession()
+
+	print "Updating %s" % subreddit
+	model.Comments.removeComments(session, subreddit)
+	model.Submissions.removeSubmissions(session, subreddit)
+	print "Getting content"
+	queryContent(session, subreddit)
 	
 
 if __name__=='__main__': 
 	engine = create_engine('sqlite:///submissions.db')
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	#updateContent().delay()
-	updateContent()
+	updateContent().delay()

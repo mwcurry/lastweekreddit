@@ -41,18 +41,27 @@ $(document).ready(function() {
 
 
 //Javascript to expand thanks to Diego F.
+//$(document).ready(function(e) {
+//	$("a.expand").click(function(e){
+//	  var excerpt = $(e.target).parents(".item").find("span.excerpt");
+//	  var link = $(e.target);
+//	  if (excerpt.hasClass("truncate")) {
+//	    excerpt.removeClass("truncate");
+//	    link.html("Close")
+//	  	}
+//	  else {
+//	    excerpt.addClass("truncate");
+//	    link.html("Expand")
+//	  	}
+//	  });
+//});
+
 $(document).ready(function(e) {
-	$("a.expand").click(function(e){
-	  var excerpt = $(e.target).parents(".item").find("span.excerpt");
-	  var link = $(e.target);
-	  if (excerpt.hasClass("truncate")) {
-	    excerpt.removeClass("truncate");
-	    link.html("Close")
-	  	}
-	  else {
-	    excerpt.addClass("truncate");
-	    link.html("Expand")
-	  	}
+	$("a.comment-thread").click(function(e){
+	  var title = $(e.target).children(".title").text();
+	  var x = $("div:contains(title)");
+	  console.log(title);
+	  console.log(x);
 	  });
 });
 

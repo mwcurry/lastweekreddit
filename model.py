@@ -6,7 +6,7 @@ import os
 import sys
 import praw
 from sqlalchemy import Column, ForeignKey, Integer, Text, DateTime, ForeignKey
-from sqlalchemy import create_engine, exists, or_, and_, func, desc, update
+from sqlalchemy import create_engine, exists, or_, and_, func, desc, update, asc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -48,6 +48,17 @@ class Subreddits(Base):
 		else: return False
 
 	@classmethod
+	def getSubreddit(class_, session, subreddit):
+		#sub = session.query(Subreddits.title == subreddit).all()
+		sub = session.query(Subreddits).filter(Subreddits.title==subreddit).one()
+		return sub
+	
+	@classmethod
+	def getSubreddits(class_, session):
+		subs = session.query(Subreddits).order_by(asc(Subreddits.title)).all()
+		return subs
+
+	@classmethod
 	def getSubredditsUnique(class_, session):
 		query = session.query(Subreddits.title.distinct().label("name"))
 		subs = [row.name.lower() for row in query.all()]
@@ -69,18 +80,24 @@ class Subreddits(Base):
 			session.commit()
 			print "Storing Subreddit %s" % subreddit.lower()
 
+	
 	@classmethod
 	def updateSubreddit(class_, session, subreddit):
 		if not (session.query(exists().where(Subreddits.title == subreddit.display_name.lower())).scalar()):
 			print "Subreddit %s doesn't exists. Adding it." % subreddit.display_name.lower() 
 			Subreddits.addSubreddit(session, subreddit)
 		else:
-			update(Subreddits).where(Subreddits.title==subreddit).values(
+			s = session.query(Subreddits).filter(Subreddits.title==subreddit.display_name.lower()).one()
+			s.id = subreddit.id
+			s.url = subreddit._url
+			s.description=subreddit.description
+			s.updated=datetime.utcnow()
+			'''subreddits.update().where(subreddits.title == subreddit).values(
 								id=subreddit.id,
 								url=subreddit._url,
 								description=subreddit.description,
 								added=datetime.utcnow(),
-								updated=datetime.utcnow())
+								updated=datetime.utcnow())'''
 			session.commit()
 			print "Updating Subreddit %s" % subreddit.display_name
 
@@ -221,7 +238,7 @@ class Comments(Base):
 
 		top = session.query(Comments).filter(and_(Comments.score > floor, Comments.subreddit==subreddit)).order_by(desc(Comments.score)).all()
 
-		query = session.query(Comments.stitle.distinct().label("submission_title")).filter(Comments.score > floor)
+		query = session.query(Comments.stitle.distinct().label("submission_title")).filter(and_(Comments.score > floor, Comments.subreddit==subreddit))
 		titles = [row.submission_title for row in query.all()]
 
 		return top, avg, std, floor, titles
