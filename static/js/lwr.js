@@ -58,11 +58,14 @@ $(document).ready(function() {
 
 $(document).ready(function(e) {
 	$("a.comment-thread").click(function(e){
-	  var title = $(e.target).children(".title").text();
-	  var x = $("div:contains(title)");
-	  console.log(title);
-	  console.log(x);
-	  });
+	  	var id = $(e.target).attr("class").split(" ")[2];
+	  	$("." + id).not(this).slideToggle();
+	  	$(this).toggleClass("unselected");
+	  	$(this).find("span.badge").toggle()
+	  	});
+	$(".panel-heading").click(function(e){
+		$(e.target).children().toggle()
+	});
 });
 
 //Update menu to be active when on part of salient page

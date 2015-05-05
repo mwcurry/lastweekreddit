@@ -238,10 +238,7 @@ class Comments(Base):
 
 		top = session.query(Comments).filter(and_(Comments.score > floor, Comments.subreddit==subreddit)).order_by(desc(Comments.score)).all()
 
-		query = session.query(Comments.stitle.distinct().label("submission_title")).filter(and_(Comments.score > floor, Comments.subreddit==subreddit))
-		titles = [row.submission_title for row in query.all()]
-
-		return top, avg, std, floor, titles
+		return top, avg, std, floor
 	
 	@classmethod
 	def removeComments(class_, session, subreddit):

@@ -60,7 +60,16 @@ def sub(subreddit):
 	#get info from model
 
 	stop, savg, sstd, sfloor = model.Submissions.getSubmissions(session,subreddit)
-	ctop, cavg, cstd, cfloor, titles = model.Comments.getComments(session,subreddit)
+	ctop, cavg, cstd, cfloor = model.Comments.getComments(session,subreddit)
+
+	titles = {}
+
+	for c in ctop:
+		if c.stitle in titles:
+			titles[c.stitle][1] += 1
+			continue
+		titles[c.stitle] = [c.sid, 1]
+	print titles
 	
 	#view
 	return render_template('content.html', comments=ctop, submissions=stop, subreddit = sub, titles = titles, menuitems = subreddits)
