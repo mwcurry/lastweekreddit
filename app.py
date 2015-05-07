@@ -33,6 +33,11 @@ def main():
 	#view
 	return render_template('home.html', subreddits = subreddits, menuitems = menuitems)
 
+@app.route('/refresh')
+def refresh():
+	APIconnect.updateAllSubreddits.delay()
+	return ":)"
+
 
 @app.route('/<subreddit>/')
 def sub(subreddit):
@@ -97,11 +102,6 @@ def add_sub(subreddit=None):
 			return redirect(subreddit)
 	else:
 		return render_template('error.html', subreddit=subreddit, menuitems = subreddits)
-
-@app.route('/refresh')
-def refresh():
-	APIconnect.updateAllSubreddits.delay()
-	return ":)"
 
 
 if __name__ == '__main__':
