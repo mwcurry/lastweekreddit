@@ -45,6 +45,10 @@ a.anchor{
     filter: alpha(opacity=1); /* Fix to make div clickable in IE */
 }
 
+.panel-heading, .item {
+    cursor: pointer;
+}
+
 
 .top-box {
 	color: white;

@@ -40,7 +40,6 @@ def sub(subreddit):
 	engine = create_engine('sqlite:///submissions.db')
 	DBSession = sessionmaker(bind=engine)
 	session = DBSession()
-	subreddit = subreddit
 	
 	
 	#check if we have subreddit in database
@@ -69,7 +68,6 @@ def sub(subreddit):
 			titles[c.stitle][1] += 1
 			continue
 		titles[c.stitle] = [c.sid, 1]
-	print titles
 	
 	#view
 	return render_template('content.html', comments=ctop, submissions=stop, subreddit = sub, titles = titles, menuitems = subreddits)

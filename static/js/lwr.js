@@ -64,8 +64,15 @@ $(document).ready(function(e) {
 	  	$(this).find("span.badge").toggle()
 	  	});
 	$(".panel-heading").click(function(e){
-		$(e.target).children().toggle()
-	});
+		if($(this).hasClass("collapsed")){
+			$(this).find("span").toggleClass("glyphicon glyphicon-chevron-right");
+			$(this).find("span").toggleClass("glyphicon glyphicon-chevron-down");
+			}
+		else {
+			$(this).find("span").toggleClass("glyphicon glyphicon-chevron-right");
+			$(this).find("span").toggleClass("glyphicon glyphicon-chevron-down");
+			}
+		});
 });
 
 //Update menu to be active when on part of salient page

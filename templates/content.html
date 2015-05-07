@@ -1,5 +1,6 @@
 {% extends "base.html" %}
   {% block content %}
+  {%if submissions%}
   <div id="sub-container" class="container">
   <a class="anchor" name="submissions"></a>
 	<h1>Top Submissions in r/{{subreddit.title}}</h1>
@@ -36,19 +37,26 @@
       </div>
 		{% endfor %}
   </div>
+  {% endif %}
+  {% if comments %}
   <div id="c-container" class="container">
-  <a class="anchor" name="comments"></a>
-	<h1>Top Comments in r/{{subreddit.title}}</h1>
+    <a class="anchor" name="comments"></a>
+    <h1>Top Comments in r/{{subreddit.title}}</h1>
     <p> {%if subreddit.updated%}Updated: {{subreddit.updated.strftime('%Y-%m-%d') }}{%endif%}</p>
     <div class="panel panel-info">
-      <div class="panel-heading">Comments' Submissions</div>
-      <div class="list-group">
-        {% for title in titles %}
-        <a href="javascript:;" class="list-group-item comment-thread id-{{titles[title][0]}}">
+      <div class="panel-heading collapsed" role="tab" id="csHeading" data-toggle="collapse" data-parent="#accordion" href="#collapsecsBody" aria-expanded="false" aria-controls="collapsecsBody">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            Submissions for Top Comments
+      </div>
+      <div id="collapsecsBody" class="panel-collapse collapse" role="tabpanel" aria-labelledby="csHeading" aria-expanded="false" style="height: 0px;">
+        <div class="list-group">
+          {% for title in titles %}
+            <a href="javascript:;" class="list-group-item comment-thread id-{{titles[title][0]}}">
               <span class="badge {{titles[title][1]}}">{{titles[title][1]}}</span>
               {{title|safe}}
-        </a>
-        {%endfor%}
+            </a>
+          {%endfor%}
+        </div>
       </div>
     </div>
 	{% for group in comments|batch(2) %}
@@ -79,4 +87,5 @@
     </div>
   {% endfor %}
   </div>
+  {% endif %}
 {% endblock %}
