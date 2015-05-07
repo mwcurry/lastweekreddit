@@ -98,6 +98,11 @@ def add_sub(subreddit=None):
 	else:
 		return render_template('error.html', subreddit=subreddit, menuitems = subreddits)
 
+@app.route('/refresh')
+def refresh():
+	APIconnect.updateAllSubreddits.delay()
+	return ":)"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
