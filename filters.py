@@ -16,6 +16,11 @@ def reddit_links(value):
 		link_text = "[%s](%s)" % (find[0], find[1])
 		value = value.replace(link_text, url)
 	return value
+def str(value):
+	if type(value) == str:
+		return True
+	else:
+		return False
 
 @evalcontextfilter
 def nl2br(eval_ctx, value):

@@ -14,6 +14,9 @@ import model
 
 from celeryconfig import celapp
 
+#to remove
+import random
+
 
 @celapp.task
 def queryContent(session, subreddit):
@@ -59,20 +62,31 @@ def queryContent(session, subreddit):
 	model.Comments.addComments(session, subreddit, comments)
 	model.Subreddits.updateSubreddit(session, sub)
 
-@celapp.task
-def updateAllSubreddits(session=None):
+@celapp.task(bind=True)
+def updateAllSubreddits(self, session=None):
 	if not session:
 		engine = create_engine('sqlite:///submissions.db')
 		model.Base.metadata.bind = engine
 		DBSession = sessionmaker(bind=engine)
 		session = DBSession()
 
+	count = 1
+	total = len(model.Subreddits.getSubredditsUnique(session))
+
 	for subreddit in model.Subreddits.getSubredditsUnique(session):
+		self.update_state(state='PROGRESS', meta={'current': count, 'total': total,'status': "Updating"})
 		print "Updating %s" % subreddit
 		model.Comments.removeComments(session, subreddit)
 		model.Submissions.removeSubmissions(session, subreddit)
+		self.update_state(state='PROGRESS', meta={'current': count, 'total': total,'status': "Retrieving"})
 		print "Getting content"
 		queryContent(session, subreddit)
+		self.update_state(state='PROGRESS', meta={'current': count, 'total': total,'status': "Updated"})
+		count += 1
+
+	return {'current': total, 'total': total,'status': "Updated all"}
+
+
 
 @celapp.task
 def updateSubreddit(subreddit, session=None):
@@ -87,7 +101,7 @@ def updateSubreddit(subreddit, session=None):
 	model.Submissions.removeSubmissions(session, subreddit)
 	print "Getting content"
 	queryContent(session, subreddit)
-	
+
 
 if __name__=='__main__': 
 	engine = create_engine('sqlite:///submissions.db')

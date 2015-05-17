@@ -3,7 +3,7 @@
   <div class="container">
     <div class="col-md-6 list-group">
     {% for subreddit in subreddits %}
-      <a href="{%if subreddit.updated%}/{{subreddit.title}}{%else%}#{%endif%}" class="list-group-item ">
+      <a href="{%if subreddit.updated%}/r/{{subreddit.title}}{%else%}#{%endif%}" class="list-group-item ">
         <h4 class="list-group-item-heading">{{subreddit.title}}</h4>
         <p class="list-group-item-text">{% if subreddit.updated %} Updated: {{subreddit.updated.strftime('%Y-%m-%d') }}{%endif%}</p>
         {% if not subreddit.updated %}

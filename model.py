@@ -239,7 +239,7 @@ class Comments(Base):
 		top = session.query(Comments).filter(and_(Comments.score > floor, Comments.subreddit==subreddit)).order_by(desc(Comments.score)).all()
 
 		return top, avg, std, floor
-	
+
 	@classmethod
 	def removeComments(class_, session, subreddit):
 		session.query(Comments).filter(Comments.subreddit==subreddit).delete()
