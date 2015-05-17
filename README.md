@@ -2,9 +2,10 @@
 Simple python script to display the best of Reddit for last week
 
 # To Dos
-*Genearl*
+*General*
 - Improve celery integration
 - Improve project structure
+- Improve speed by improving reddit API integration
 
 *Operations*
 - Better algorithm to determine top posts (in other words, am I missing anything good by my current method?)
