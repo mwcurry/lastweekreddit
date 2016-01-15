@@ -1,5 +1,5 @@
 # Description
-Simple python script to display the best of Reddit for last week
+Flask-basked python web app that displays the best of Reddit for user-defined subreddit's for last week.
 
 # To Dos
 *General*
@@ -14,4 +14,4 @@ Simple python script to display the best of Reddit for last week
 - Improve user interface. Looks okay but could be better.
 
 *User*
-- Allow FE user to refresh single subreddit through GUI
+- Allow front end user to refresh single subreddit through GUI (versus secret URL)
